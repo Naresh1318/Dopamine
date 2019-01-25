@@ -1,0 +1,23 @@
+{
+  "name": "playing_pong_with_eeg",
+  "version": "0.0.1",
+  "description": "An electron app to fire up the classic game of pong.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Naresh1318/Playing_Pong_With_EEG.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Naresh1318/Playing_Pong_With_EEG/issues"
+  },
+  "homepage": "https://github.com/Naresh1318/Playing_Pong_With_EEG#readme",
+  "devDependencies": {
+    "electron": "^4.0.2"
+  }
+}
