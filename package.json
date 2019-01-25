@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Naresh1318/Playing_Pong_With_EEG#readme",
   "devDependencies": {
-    "electron": "^4.0.2"
+    "electron": "^4.0.2",
+    "node-lsl": "^0.1.0"
   }
 }
