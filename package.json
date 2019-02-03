@@ -1,24 +1,23 @@
 {
-  "name": "playing_pong_with_eeg",
+  "name": "dopamine",
   "version": "0.0.1",
-  "description": "An electron app to fire up the classic game of pong.",
+  "description": "An electron app to fire up the classic game of pong",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Naresh1318/Playing_Pong_With_EEG.git"
+    "url": "git+https://github.com/Naresh1318/Dopamine.git"
   },
-  "author": "",
+  "keywords": [
+    "EEG",
+    "Electron"
+  ],
+  "author": "Naresh Nagabushan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Naresh1318/Playing_Pong_With_EEG/issues"
+    "url": "https://github.com/Naresh1318/Dopamine/issues"
   },
-  "homepage": "https://github.com/Naresh1318/Playing_Pong_With_EEG#readme",
-  "devDependencies": {
-    "electron": "^4.0.2",
-    "node-lsl": "^0.1.0"
-  }
+  "homepage": "https://github.com/Naresh1318/Dopamine#readme"
 }
