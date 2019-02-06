@@ -2,10 +2,10 @@
   "name": "dopamine",
   "version": "0.0.1",
   "description": "An electron app to fire up the classic game of pong",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node receive.js"
+    "start": "electron ."
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/Naresh1318/Dopamine/issues"
   },
-  "homepage": "https://github.com/Naresh1318/Dopamine#readme"
+  "homepage": "https://github.com/Naresh1318/Dopamine#readme",
+  "devDependencies": {
+    "electron": "^4.0.4"
+  }
 }

@@ -2,11 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Playing Pong</title>
+    <title>Dopamine</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 <body>
-    <p>
-        Yello!
-    </p>
+    <div id="app">
+        <p>
+            {{ message }}
+        </p>
+
+        <button v-on:click="say_something">Click me!</button>
+
+    </div>
 </body>
+<script src="../frontend/index.js"></script>
 </html>
