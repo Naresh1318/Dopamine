@@ -1,0 +1,6 @@
+# Ignore directories
+node_modules/
+
+# Pycharm idea files
+.idea/
+
