@@ -1,3 +1,5 @@
+const {run_bat_file} = require('./windows_cmd');
+
 let app = new Vue({
     el: '#app',
     data: {
@@ -5,7 +7,7 @@ let app = new Vue({
     },
     methods: {
         run_bci2000_p300: function () {
-            require('../test_batch');
+            run_bat_file("test_run.bat");
         }
     }
 });
