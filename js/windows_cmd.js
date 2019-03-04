@@ -10,18 +10,18 @@ exports.run_bat_file = function(file_name) {
         var str = String.fromCharCode.apply(null, data);
         console.info(str);
     });
-    
+
     // Handle error output
     bat.stderr.on('data', (data) => {
         // As said before, convert the Uint8Array to a readable string.
         var str = String.fromCharCode.apply(null, data);
         console.error(str);
     });
-    
+
     // Handle on exit event
     bat.on('exit', (code) => {
         var preText = `Child exited with code ${code} : `;
-    
+
         switch(code){
             case 0:
                 console.info(preText+"Something unknown happened executing the batch.");

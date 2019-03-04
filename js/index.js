@@ -1,4 +1,4 @@
-const {run_bat_file} = require('./windows_cmd');
+const {run_bat_file} = require('../js/windows_cmd');
 
 let app = new Vue({
     el: '#app',
