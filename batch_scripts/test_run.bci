@@ -1,0 +1,18 @@
+Echo Please enter a subject ID:
+Set SubjectID ${Read line}
+
+Startup system
+Start executable SignalGenerator
+Start executable SpectralSignalProcessing
+Start executable CursorTask
+Wait for Connected
+Load parameterfile "../parms/examples/CursorTask_SignalGenerator.prm"
+For i in 1 2 3
+  Load parameterfile "../parms/MyExperiment/Session$i.prm"
+  Set parameter SubjectName $SubjectID
+  Set parameter SubjectSession $i
+  Set config
+  Wait for Resting
+  Start
+  Wait for Suspended 1000
+End
