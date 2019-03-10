@@ -1,4 +1,4 @@
-const {run_bat_file} = require('../js/windows_cmd');
+const {run_cmd_file} = require('../js/windows_cmd');
 
 let app = new Vue({
     el: '#app',
@@ -6,8 +6,8 @@ let app = new Vue({
         message: "Speller's gonna be great!"
     },
     methods: {
-        run_bci2000_p300: function () {
-            run_bat_file("test_run.bat");
+        run_cmd_script: function(file_name) {
+            run_cmd_file(file_name + ".cmd");
         }
     }
 });

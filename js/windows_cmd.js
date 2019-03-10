@@ -1,7 +1,7 @@
 const path = require('path')
 const {spawn} = require('child_process');
 
-exports.run_bat_file = function(file_name) {
+exports.run_cmd_file = function(file_name) {
     const bat = spawn('cmd.exe', ['/c', path.join(__dirname, "../batch_scripts", file_name)]);
 
     // Handle normal output

@@ -8,9 +8,25 @@
 </head>
 <body>
     <div id="app">
-        <div class="container">
-            <button class="btn btn-primary" v-on="run_bci2000_p300()"> Start P300 module </button>
-        </div>
+        <p>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <a href="index.html"> Home </a>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" v-on:click="run_cmd_script('start_signal_monitoring')"> Begin Signal Monitoring </button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" v-on:click="run_cmd_script('start_p300_acquisition')"> Start calibration </button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" v-on:click="run_cmd_script('start_p300_training')"> Start calibration </button>
+                    </div>
+                </div>
+            </div>
+        </p>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
