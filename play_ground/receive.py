@@ -14,3 +14,4 @@ while True:
     # interested in it)
     sample, timestamp = inlet.pull_sample()
     print(timestamp, sample)
+    
