@@ -12,26 +12,76 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <a href="index.html"> Home </a>
+                        <div class="row m-3">
+                            <a href="index.html"> Home </a>
+                        </div>
+                        <div class="row m-3">
+                            <button class="btn btn-primary" v-on:click="show_card('signal_monitoring_active')" style="width: 15rem"> Signal Monitoring </button>
+                        </div>
+                        <div class="row m-3">
+                            <button class="btn btn-primary" v-on:click="show_card('p300_acquisition_active')" style="width: 15rem"> Calibration </button>
+                        </div>
+                        <div class="row m-3">
+                            <button class="btn btn-primary" v-on:click="show_card('p300_training_active')" style="width: 15rem"> Training </button>
+                        </div>
+                        <div class="row m-3">
+                            <button class="btn btn-primary" v-on:click="show_card('p300_online_active')" style="width: 15rem"> Online </button>
+                        </div>
                     </div>
                     <div class="col">
-                        <button class="btn btn-primary" v-on:click="run_cmd_script('start_signal_monitoring')"> Begin Signal Monitoring </button>
+                        <div class="card" v-show="active_card.signal_monitoring_active" style="width: 18rem;">
+                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"> Signal Monitoring </h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <button class="btn btn-primary" v-on:click="run_cmd_script('start_signal_monitoring')"> Begin Signal Monitoring </button>
+                            </div>
+                        </div>
+                        <div class="card" v-show="active_card.p300_acquisition_active" style="width: 18rem;">
+                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"> P300 Acquisition </h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                No. of Trials: <input v-model="n_acq_trials" class="m-1"> {{n_acq_trials}} </input> </br>
+                                No. of Repetitions: <input v-model="n_acq_repetitions" class="m-1"> {{n_acq_repetitions}} </input>
+                                <button class="btn btn-primary" v-on:click="run_p300_calibration()"> Start calibration </button>
+                            </div>
+                        </div>
+                        <div class="card" v-show="active_card.p300_training_active" style="width: 18rem;">
+                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"> P300 Training </h5>
+                                <p class="card-text">
+                                    File used to train: {{get_recent_ov_file()}}
+                                </p>
+                                <button class="btn btn-primary" v-on:click="run_p300_training()"> Start Training </button>
+                            </div>
+                        </div>
+                        <div class="card" v-show="active_card.p300_online_active" style="width: 18rem;">
+                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"> P300 Online </h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <button class="btn btn-primary" v-on:click="run_cmd_script('start_p300_online')"> Start Online </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col">
-                        <button class="btn btn-primary" v-on:click="run_cmd_script('start_p300_acquisition')"> Start calibration </button>
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-primary" v-on:click="run_cmd_script('start_p300_training')"> Start calibration </button>
+                </div>
+                <div class="row" v-show="active_card.p300_training_active">
+                    <div class="card m-3" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title">Training Results</h5>
+                            <pre class="card-text"> {{console_output}} </pre>
+                        </div>
                     </div>
                 </div>
             </div>
         </p>
-
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    
 </body>
-<script src="../js/index.js"></script>
+<script src="../js/p300_speller.js"></script>
 </html>
