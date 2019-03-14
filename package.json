@@ -23,7 +23,8 @@
   "homepage": "https://github.com/Naresh1318/Dopamine#readme",
   "devDependencies": {
     "electron": "^4.0.4",
-    "electron-reload": "^1.4.0"
+    "electron-reload": "^1.4.0",
+    "find-process": "^1.2.1"
   },
   "dependencies": {
     "vue": "^2.6.8"

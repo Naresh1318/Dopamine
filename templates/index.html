@@ -10,16 +10,23 @@
 <body>
     <div id="app" style="padding: 10px">
         <div class="container">
-            <div class="row m-1">
-                <div class="col" style="margin-left: 97%">
-                    <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
-                    <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
+            <div class="row pt-2">
+                <div class="col" style="margin-left: 90%">
+                    <div class="row">
+                        <div class="col">
+                            <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
+                        </div>
+                        <div class="col">
+                            <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
+                            <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row m-5 pt-5">
                 <div class="col">
-                    <div class="card" style="width: 18rem; margin: auto;">
-                        <img class="card-img-top" src="../resources/img/p300_cover.png" alt="Card image cap">
+                    <div class="card" style="margin: auto; width: 20rem">
+                        <img class="card-img-top" src="../resources/img/p300_cover.png" alt="Card image cap" style="width: 90%">
                         <div class="card-body">
                             <h5 class="card-title"> P300 </h5>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -28,8 +35,8 @@
                     </div>
                 </div>
                 <div class="col">
-                        <div class="card" style="width: 18rem; margin: auto;">
-                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                        <div class="card" style="margin: auto; width: 20rem">
+                            <img class="card-img-top" src="../resources/img/pong_cover.jpg" alt="Card image cap" style="width: 98%">
                             <div class="card-body">
                                 <h5 class="card-title"> Motor Imagery </h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>

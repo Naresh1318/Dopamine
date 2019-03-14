@@ -4,6 +4,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const readline = require("readline");
+const find = require('find-process');
 const {spawn} = require('child_process');
 const net = require('net');
 
@@ -34,6 +35,18 @@ let app = new Vue({
             else if (this.acquisition_server_status == "connected") {
                 run_cmd_file(file_name + ".cmd");
             }
+        },
+        start_acquisition_server: function() {
+            find("name", "openvibe-acquisition-server.exe", true)
+            .then(function (list) {
+              console.log("INFO: There is/are %s openvibe process(es)", list.length);
+              if (list.length < 1) {
+                  run_cmd_file("start_acquisition_server.cmd");
+              } else {
+                  alert("Acquisition server already running");
+                  console.log("INFO: Acquisition server already running");
+              }
+            });
         },
         show_card: function(div_element) {
             for (k in this.active_card) {
@@ -115,15 +128,19 @@ let app = new Vue({
                 app.console_output  = "";
                 const bat = spawn('cmd.exe', ['/c', path.join(__dirname, "../batch_scripts", file_name)]);
 
+                app.console_output = app.console_output + "\n" + "Training xDAWN Spatial Filter...";
+
                 // Handle normal output
                 bat.stdout.on('data', (data) => {
                     // As said before, convert the Uint8Array to a readable string.
                     var str = String.fromCharCode.apply(null, data);
                     console.info(str);
-                    app.console_output = app.console_output + "\n" + str;
+                    if (str.search("xDAWN Spatial filter trained successfully") != -1) {
+                        app.console_output = app.console_output + "\n" + "xDAWN Spatial filter trained successfully!";
+                    }
                 });
 
-                    // Handle error output
+                // Handle error output
                 bat.stderr.on('data', (data) => {
                     // As said before, convert the Uint8Array to a readable string.
                     var str = String.fromCharCode.apply(null, data);
@@ -164,14 +181,17 @@ let app = new Vue({
                 app.console_output  = "";
                 const bat = spawn('cmd.exe', ['/c', path.join(__dirname, "../batch_scripts", file_name)]);
 
+                app.console_output = app.console_output + "\n" + "Training LDA Classifier...";
+
                 // Handle normal output
                 bat.stdout.on('data', (data) => {
                     // As said before, convert the Uint8Array to a readable string.
                     var str = String.fromCharCode.apply(null, data);
                     console.info(str);
-                    app.console_output = app.console_output + "\n" + str;
+                    if (str.search("accuracy") != -1 || str.search("Target") != -1) {
+                        app.console_output = app.console_output + "\n" + str;
+                    }
                 });
-
                     // Handle error output
                 bat.stderr.on('data', (data) => {
                     // As said before, convert the Uint8Array to a readable string.
