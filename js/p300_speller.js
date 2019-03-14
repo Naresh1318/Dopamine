@@ -5,6 +5,8 @@ const os = require("os");
 const path = require("path");
 const readline = require("readline");
 const {spawn} = require('child_process');
+const net = require('net');
+
 
 let app = new Vue({
     el: '#app',
@@ -16,6 +18,7 @@ let app = new Vue({
             p300_training_active: false,
             p300_online_active: false,
         },
+        acquisition_server_status: "connected",
         console_output: "",
         n_acq_trials: 10,
         n_acq_repetitions: 12,
@@ -120,5 +123,36 @@ let app = new Vue({
                 console.log("INFO: P300 Training Started");
             });
         },
+        watch_acquisition_server: function ()
+        {
+            let refresh_rate = 1;  // 5 Seconds
+            let client = net.connect({port: 1024});
+            let data_received = false;
+
+            client.on("data", (data)=>{
+                if (data) {
+                    // console.log("Data Receiving!!");
+                    this.acquisition_server_status = "Connected";
+                    client.destroy();
+                    data_received = true;
+                }
+            });
+            
+            client.on("close", ()=> {
+                if (!data_received) {
+                    this.acquisition_server_status = "Press Connect and then Press Play";
+                }
+                // console.log("Connection Lost :(");
+            });
+
+            client.on("error", ()=> {
+                this.acquisition_server_status = "Press Connect and then Press Play";
+                // console.log("Connection Lost :(");
+            });
+
+            setTimeout(this.watch_acquisition_server, refresh_rate*1000);
+        },
     }
 });
+
+app.watch_acquisition_server();

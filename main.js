@@ -4,7 +4,7 @@ require('electron-reload')(__dirname);
 let win = null;
 
 function createWindow() {
-    win = new BrowserWindow({width: 800, height: 600});
+    win = new BrowserWindow({width: 1000, height: 600});
     win.loadFile("./templates/index.html");
     win.webContents.openDevTools();
     win.on("closed", () => {
@@ -25,4 +25,3 @@ app.on("activate", () => {
         createWindow();
     }
 });
-

@@ -3,3 +3,6 @@ node_modules/
 
 # Pycharm files
 .idea/
+
+# VS Code Settings file
+.vscode/settings.json
