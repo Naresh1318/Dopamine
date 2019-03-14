@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>P300 Speller</title>
+    <title>Motor Imagery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -25,7 +25,7 @@
                             <button class="btn btn-primary" v-on:click="show_card('p300_training_active')" style="width: 15rem"> Training </button>
                         </div>
                         <div class="row m-3">
-                            <button class="btn btn-primary" v-on:click="show_card('p300_online_active')" style="width: 15rem"> Online </button>
+                            <button class="btn btn-primary" v-on:click="show_card('p300_online_active')" style="width: 15rem"> Pong </button>
                         </div>
                     </div>
                     <div class="col">
@@ -60,9 +60,9 @@
                         <div class="card" v-show="active_card.p300_online_active" style="width: 18rem;">
                             <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
                             <div class="card-body">
-                                <h5 class="card-title"> P300 Online </h5>
+                                <h5 class="card-title"> Pong Simulator </h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <button class="btn btn-primary" v-on:click="run_cmd_script('start_p300_online')"> Start Online </button>
+                                <a class="btn btn-primary" href="./pong_simulator.html"> Start Game </a>
                             </div>
                         </div>
                     </div>
