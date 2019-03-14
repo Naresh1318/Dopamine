@@ -22,6 +22,7 @@ let app = new Vue({
         console_output: "",
         n_acq_trials: 10,
         n_acq_repetitions: 12,
+        reference_scenario_path: ".\\openvibe_scenarios\\p300_speller",
         scenario_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN"),
         signals_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN\\signals"),
     },
@@ -40,9 +41,10 @@ let app = new Vue({
         },
         run_p300_calibration: function() {
             // Modify configuration file
-            var cfg_path = path.join(this.scenario_path, "p300-xdawn-1-acquisition.xml");
+            var new_cfg_path = path.join(this.scenario_path, "p300-xdawn-1-acquisition.xml");
+            var reference_cfg_path = path.join(this.reference_scenario_path, "p300-xdawn-1-acquisition.xml");
             var rl = readline.createInterface({
-                input: fs.createReadStream(cfg_path),
+                input: fs.createReadStream(reference_cfg_path),
                 crlfDelay: Infinity
             });
             var new_cfg_file = "";
@@ -69,7 +71,7 @@ let app = new Vue({
             })
             .on("close", function() {
                 rl.close();
-                fs.writeFile(cfg_path, new_cfg_file, function(err) {
+                fs.writeFile(new_cfg_path, new_cfg_file, function(err) {
                     if (err) throw err;
                 });
                 console.log("INFO: Acquisition Configuration Replaced!");
@@ -78,9 +80,10 @@ let app = new Vue({
         },
         run_p300_training: function() {
             // Modify Configuration file
-            var cfg_path = path.join(this.scenario_path, "p300-xdawn-2-train-xDAWN.xml");
+            var new_cfg_path = path.join(this.scenario_path, "p300-xdawn-2-train-xDAWN.xml");
+            var reference_cfg_path = path.join(this.reference_scenario_path, "p300-xdawn-2-train-xDAWN.xml");
             var rl = readline.createInterface({
-                input: fs.createReadStream(cfg_path),
+                input: fs.createReadStream(reference_cfg_path),
                 crlfDelay: Infinity
             });
             var new_cfg_file = "";
@@ -98,12 +101,13 @@ let app = new Vue({
             })
             .on("close", function() {
                 rl.close();
-                fs.writeFile(cfg_path, new_cfg_file, function(err) {
+                fs.writeFile(new_cfg_path, new_cfg_file, function(err) {
                     if (err) throw err;
                 });
                 console.log("INFO: Training Configuration Replaced!");
                 var file_name = "start_p300_training.cmd";
 
+                app.console_output  = "";
                 const bat = spawn('cmd.exe', ['/c', path.join(__dirname, "../batch_scripts", file_name)]);
 
                 // Handle normal output
@@ -121,6 +125,55 @@ let app = new Vue({
                     console.error(str);
                 });
                 console.log("INFO: P300 Training Started");
+            });
+        },
+        run_p300_lda_training: function() {
+            // Modify Configuration file
+            var new_cfg_path = path.join(this.scenario_path, "p300-xdawn-3-train-classifier.xml");
+            var reference_cfg_path = path.join(this.reference_scenario_path, "p300-xdawn-3-train-classifier.xml");
+            var rl = readline.createInterface({
+                input: fs.createReadStream(reference_cfg_path),
+                crlfDelay: Infinity
+            });
+            var new_cfg_file = "";
+            var offset = 0;
+            rl.on("line", (line) => {
+                if (line.search("Filename</Name>") != -1) {
+                    offset = 1;
+                } else if (offset === 1) {
+                    offset += 1;
+                } else if (offset === 2) {
+                    offset = 0;
+                    line = `					<Value>\${Player_ScenarioDirectory}/signals/${this.get_recent_ov_file()}</Value>`;
+                }
+                new_cfg_file = new_cfg_file.concat(line + "\n");
+            })
+            .on("close", function() {
+                rl.close();
+                fs.writeFile(new_cfg_path, new_cfg_file, function(err) {
+                    if (err) throw err;
+                });
+                console.log("INFO: Training Configuration Replaced!");
+                var file_name = "start_p300_lda_training.cmd";
+
+                app.console_output  = "";
+                const bat = spawn('cmd.exe', ['/c', path.join(__dirname, "../batch_scripts", file_name)]);
+
+                // Handle normal output
+                bat.stdout.on('data', (data) => {
+                    // As said before, convert the Uint8Array to a readable string.
+                    var str = String.fromCharCode.apply(null, data);
+                    console.info(str);
+                    app.console_output = app.console_output + "\n" + str;
+                });
+
+                    // Handle error output
+                bat.stderr.on('data', (data) => {
+                    // As said before, convert the Uint8Array to a readable string.
+                    var str = String.fromCharCode.apply(null, data);
+                    console.error(str);
+                });
+                console.log("INFO: P300 LDA Training Started");
             });
         },
         watch_acquisition_server: function ()

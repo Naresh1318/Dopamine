@@ -47,8 +47,8 @@
                             <div class="card-body">
                                 <h5 class="card-title"> P300 Acquisition </h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                No. of Trials: <input v-model="n_acq_trials" class="m-1"> {{n_acq_trials}} </input> </br>
-                                No. of Repetitions: <input v-model="n_acq_repetitions" class="m-1"> {{n_acq_repetitions}} </input>
+                                No. of Trials: <input v-model="n_acq_trials" class="m-1"></input> </br>
+                                No. of Repetitions: <input v-model="n_acq_repetitions" class="m-1"></input> <br/><br/>
                                 <button class="btn btn-primary" v-on:click="run_p300_calibration()"> Start calibration </button>
                             </div>
                         </div>
@@ -59,7 +59,8 @@
                                 <p class="card-text">
                                     File used to train: {{get_recent_ov_file()}}
                                 </p>
-                                <button class="btn btn-primary" v-on:click="run_p300_training()"> Start Training </button>
+                                <button class="btn btn-primary" v-on:click="run_p300_training()"> Train XDAWN </button>
+                                <button class="btn btn-primary" v-on:click="run_p300_lda_training()"> Train LDA </button>
                             </div>
                         </div>
                         <div class="card" v-show="active_card.p300_online_active" style="width: 18rem;">
