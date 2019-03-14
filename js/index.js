@@ -45,3 +45,7 @@ let app = new Vue({
 });
 
 app.watch_acquisition_server();
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  });

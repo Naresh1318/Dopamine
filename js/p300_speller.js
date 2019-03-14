@@ -28,7 +28,12 @@ let app = new Vue({
     },
     methods: {
         run_cmd_script: function(file_name) {
-            run_cmd_file(file_name + ".cmd");
+            if (this.acquisition_server_status != "connected") {
+                alert("Headset not connected..");
+            }
+            else if (this.acquisition_server_status == "connected") {
+                run_cmd_file(file_name + ".cmd");
+            }
         },
         show_card: function(div_element) {
             for (k in this.active_card) {
@@ -209,3 +214,8 @@ let app = new Vue({
 });
 
 app.watch_acquisition_server();
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  });
+  

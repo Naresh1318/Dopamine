@@ -5,18 +5,20 @@
     <title>P300 Speller</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <div id="app">
         <p>
             <div class="container">
-                <div class="row">
-                        <div class="col m-2">
-                            Headset Connection Status: {{acquisition_server_status}}
-                        </div>
+                <div class="row m-1">
+                    <div class="col" style="margin-left: 97%">
+                        <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
+                        <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
                     </div>
+                </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-4">
                         <div class="row m-3">
                             <a href="index.html"> Home </a>
                         </div>
@@ -33,27 +35,43 @@
                             <button class="btn btn-primary" v-on:click="show_card('p300_online_active')" style="width: 15rem"> Online </button>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="card" v-show="active_card.signal_monitoring_active" style="width: 18rem;">
-                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                    <div class="col-8">
+                        <div class="card" v-show="active_card.signal_monitoring_active" style="width: 100%">
+                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap" style="width: 40%; margin: auto">
                             <div class="card-body">
                                 <h5 class="card-title"> Signal Monitoring </h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <p class="card-text">
+                                In this section you will observe the effects of EOG (mainly eye blinks) and facial muscle movements on EEG data.
+                                <ol>
+                                    <li>Make sure the connection status says <b>connected</b></li>
+                                    <li>Click <b>Begin Signal Monitoring</b> when ready</li>
+                                    <li>A new windows now shows row input data received from the head in the top row and filtered EEG signals in the bottom row</li>
+                                    <li>Notice how the filtered EEG data looks smoother then the raw data. This is because of the high frequency noise being removed using a bandpass filter (1-20Hz).</li>
+                                    <li>Notice eye blinks at channels Fp1 and Fp2</li>
+                                    <li>Ask the participant to clinch their teeth and notice the random changes in EEG data across all channels</li>
+                                </ol>    
+                                </p>
                                 <button class="btn btn-primary" v-on:click="run_cmd_script('start_signal_monitoring')"> Begin Signal Monitoring </button>
                             </div>
                         </div>
-                        <div class="card" v-show="active_card.p300_acquisition_active" style="width: 18rem;">
-                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                        <div class="card" v-show="active_card.p300_acquisition_active" style="width: 100%">
+                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap" style="width: 40%; margin: auto">
                             <div class="card-body">
                                 <h5 class="card-title"> P300 Acquisition </h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                No. of Trials: <input v-model="n_acq_trials" class="m-1"></input> </br>
-                                No. of Repetitions: <input v-model="n_acq_repetitions" class="m-1"></input> <br/><br/>
+                                <label for="basic-url">No. of Trials:</label>
+                                <div class="input-group mb-3" style="width: 30%">
+                                    <input class="form-control m-1" placeholder="10" aria-label="10" aria-describedby="basic-addon1" v-model="n_acq_trials"></input>
+                                </div>
+                                <label for="basic-url">No. of Repetitions:</label>
+                                <div class="input-group mb-3" style="width: 30%">
+                                    <input v-model="n_acq_repetitions" class="form-control m-1" placeholder="10" aria-label="10" aria-describedby="basic-addon1" ></input> <br/><br/>                                
+                                </div>
                                 <button class="btn btn-primary" v-on:click="run_p300_calibration()"> Start calibration </button>
                             </div>
                         </div>
-                        <div class="card" v-show="active_card.p300_training_active" style="width: 18rem;">
-                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                        <div class="card" v-show="active_card.p300_training_active" style="width: 100%">
+                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap" style="width: 40%; margin: auto">
                             <div class="card-body">
                                 <h5 class="card-title"> P300 Training </h5>
                                 <p class="card-text">
@@ -63,8 +81,8 @@
                                 <button class="btn btn-primary" v-on:click="run_p300_lda_training()"> Train LDA </button>
                             </div>
                         </div>
-                        <div class="card" v-show="active_card.p300_online_active" style="width: 18rem;">
-                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap">
+                        <div class="card" v-show="active_card.p300_online_active" style="width: 100%">
+                            <img class="card-img-top" src="../resources/img/test_image.jpg" alt="Card image cap" style="width: 40%; margin: auto">
                             <div class="card-body">
                                 <h5 class="card-title"> P300 Online </h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
