@@ -7,7 +7,7 @@ let app = new Vue({
     el: '#app',
     data: {
         message: "Speller's gonna be great!",
-        acquisition_server_status: "connected",
+        acquisition_server_status: "Connected",
     },
     methods: {
         run_cmd_script: function(file_name) {

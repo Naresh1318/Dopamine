@@ -29,12 +29,7 @@ let app = new Vue({
     },
     methods: {
         run_cmd_script: function(file_name) {
-            if (this.acquisition_server_status != "connected") {
-                alert("Headset not connected..");
-            }
-            else if (this.acquisition_server_status == "connected") {
-                run_cmd_file(file_name + ".cmd");
-            }
+            run_cmd_file(file_name + ".cmd");
         },
         start_acquisition_server: function() {
             find("name", "openvibe-acquisition-server.exe", true)

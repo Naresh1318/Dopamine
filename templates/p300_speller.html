@@ -54,10 +54,11 @@
                                 <ol>
                                     <li>Make sure the connection status says <b>connected</b></li>
                                     <li>Click <b>Begin Signal Monitoring</b> when ready</li>
-                                    <li>A new windows now shows row input data received from the head in the top row and filtered EEG signals in the bottom row</li>
+                                    <li>A new windows now shows raw data received from the headset in the top row and filtered EEG data in the bottom row</li>
                                     <li>Notice how the filtered EEG data looks smoother then the raw data. This is because of the high frequency noise being removed using a bandpass filter (1-20Hz).</li>
-                                    <li>Notice eye blinks at channels Fp1 and Fp2</li>
+                                    <li>Notice eye blinks at channels P3 and P4</li>
                                     <li>Ask the participant to clinch their teeth and notice the random changes in EEG data across all channels</li>
+                                    <li>Proceed to the Calibration Stage</li>
                                 </ol>    
                                 </p>
                                 <button class="btn btn-primary" v-on:click="run_cmd_script('start_signal_monitoring')"> Begin Signal Monitoring </button>
