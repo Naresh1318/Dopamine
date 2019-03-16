@@ -19,7 +19,7 @@ let app = new Vue({
             p300_training_active: false,
             p300_online_active: false,
         },
-        acquisition_server_status: "connected",
+        acquisition_server_status: "Connected",
         console_output: "",
         n_acq_trials: 10,
         n_acq_repetitions: 12,
@@ -29,10 +29,10 @@ let app = new Vue({
     },
     methods: {
         run_cmd_script: function(file_name) {
-            if (this.acquisition_server_status != "connected") {
+            if (this.acquisition_server_status != "Connected") {
                 alert("Headset not connected..");
             }
-            else if (this.acquisition_server_status == "connected") {
+            else if (this.acquisition_server_status == "Connected") {
                 run_cmd_file(file_name + ".cmd");
             }
         },
