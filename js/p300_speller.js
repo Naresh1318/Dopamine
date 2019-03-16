@@ -62,9 +62,10 @@ let app = new Vue({
              * Copy the reference configuration file to the working directory and start signal monitoring
              */
             let xml_file = "p300-xdawn-0-signal-monitoring.xml"
-            fs.copyFile(path.join(reference_scenario_path, xml_file), path.join(this.scenario_path, xml_file), (err) => {
+            fs.copyFile(path.join(this.reference_scenario_path, xml_file), path.join(this.scenario_path, xml_file), (err) => {
                 if (err) throw err;
                 console.log(xml_file + " Copied to the working directory!");
+                this.run_cmd_script("start_signal_monitoring");
             });
         },
         run_p300_calibration: function() {
@@ -209,6 +210,17 @@ let app = new Vue({
                     console.error(str);
                 });
                 console.log("INFO: P300 LDA Training Started");
+            });
+        },
+        run_p300_online: function() {
+            /**
+             * Copy the reference configuration file to the working directory and start P300 online task
+             */
+            let xml_file = "p300-xdawn-4-online.xml"
+            fs.copyFile(path.join(this.reference_scenario_path, xml_file), path.join(this.scenario_path, xml_file), (err) => {
+                if (err) throw err;
+                console.log(xml_file + " Copied to the working directory!");
+                this.run_cmd_script("start_p300_online");
             });
         },
         watch_acquisition_server: function ()

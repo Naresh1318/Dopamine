@@ -61,7 +61,7 @@
                                     <li>Proceed to the Calibration Stage</li>
                                 </ol>    
                                 </p>
-                                <button class="btn btn-primary" v-on:click="run_cmd_script('start_signal_monitoring')"> Begin Signal Monitoring </button>
+                                <button class="btn btn-primary" v-on:click="run_p300_signal_monitoring()"> Begin Signal Monitoring </button>
                             </div>
                         </div>
                         <div class="card" v-show="active_card.p300_acquisition_active" style="width: 100%">
@@ -96,7 +96,7 @@
                             <div class="card-body">
                                 <h5 class="card-title"> P300 Online </h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <button class="btn btn-primary" v-on:click="run_cmd_script('start_p300_online')"> Start Online </button>
+                                <button class="btn btn-primary" v-on:click="run_p300_online()"> Start Online </button>
                             </div>
                         </div>
                     </div>
