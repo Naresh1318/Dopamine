@@ -19,7 +19,7 @@ let app = new Vue({
             p300_training_active: false,
             p300_online_active: false,
         },
-        acquisition_server_status: "connected",
+        acquisition_server_status: "Connected",
         console_output: "",
         n_acq_trials: 10,
         n_acq_repetitions: 12,
@@ -29,7 +29,12 @@ let app = new Vue({
     },
     methods: {
         run_cmd_script: function(file_name) {
-            run_cmd_file(file_name + ".cmd");
+            if (this.acquisition_server_status != "Connected") {
+                alert("Headset not connected..");
+            }
+            else if (this.acquisition_server_status == "Connected") {
+                run_cmd_file(file_name + ".cmd");
+            }
         },
         start_acquisition_server: function() {
             find("name", "openvibe-acquisition-server.exe", true)
@@ -51,6 +56,16 @@ let app = new Vue({
         },  
         get_recent_ov_file: function() {
             return get_recent_file(this.signals_path);
+        },
+        run_p300_signal_monitoring: function() {
+            /**
+             * Copy the reference configuration file to the working directory and start signal monitoring
+             */
+            let xml_file = "p300-xdawn-0-signal-monitoring.xml"
+            fs.copyFile(path.join(reference_scenario_path, xml_file), path.join(this.scenario_path, xml_file), (err) => {
+                if (err) throw err;
+                console.log(xml_file + " Copied to the working directory!");
+            });
         },
         run_p300_calibration: function() {
             // Modify configuration file
