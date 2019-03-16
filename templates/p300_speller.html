@@ -87,8 +87,16 @@
                                 <p class="card-text">
                                     File used to train: {{get_recent_ov_file()}}
                                 </p>
-                                <button class="btn btn-primary" v-on:click="run_p300_training()"> Train XDAWN </button>
-                                <button class="btn btn-primary" v-on:click="run_p300_lda_training()"> Train LDA </button>
+                                <button class="btn btn-primary" v-if="p300_training==false" v-on:click="run_p300_training()"> Train XDAWN </button>
+                                <button class="btn btn-primary" v-if="p300_training==true" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Training XDAWN...
+                                </button>
+                                <button class="btn btn-primary" v-if="lda_training==false" v-on:click="run_p300_lda_training()" :disabled="!start_lda_training"> Train LDA </button>
+                                <button class="btn btn-primary" v-if="lda_training==true" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Training LDA...
+                                </button>
                             </div>
                         </div>
                         <div class="card" v-show="active_card.p300_online_active" style="width: 100%">

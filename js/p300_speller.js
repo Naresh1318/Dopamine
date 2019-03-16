@@ -23,6 +23,9 @@ let app = new Vue({
         console_output: "",
         n_acq_trials: 10,
         n_acq_repetitions: 12,
+        p300_training: false,
+        start_lda_training: false,
+        lda_training: false,
         reference_scenario_path: ".\\openvibe_scenarios\\p300_speller",
         scenario_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN"),
         signals_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN\\signals"),
@@ -109,6 +112,7 @@ let app = new Vue({
         },
         run_p300_training: function() {
             // Modify Configuration file
+            this.p300_training = true;
             var new_cfg_path = path.join(this.scenario_path, "p300-xdawn-2-train-xDAWN.xml");
             var reference_cfg_path = path.join(this.reference_scenario_path, "p300-xdawn-2-train-xDAWN.xml");
             var rl = readline.createInterface({
@@ -147,6 +151,8 @@ let app = new Vue({
                     var str = String.fromCharCode.apply(null, data);
                     console.info(str);
                     if (str.search("xDAWN Spatial filter trained successfully") != -1) {
+                        app.p300_training = false;
+                        app.start_lda_training = true;
                         app.console_output = app.console_output + "\n" + "xDAWN Spatial filter trained successfully!";
                     }
                 });
@@ -162,6 +168,7 @@ let app = new Vue({
         },
         run_p300_lda_training: function() {
             // Modify Configuration file
+            this.lda_training = true;
             var new_cfg_path = path.join(this.scenario_path, "p300-xdawn-3-train-classifier.xml");
             var reference_cfg_path = path.join(this.reference_scenario_path, "p300-xdawn-3-train-classifier.xml");
             var rl = readline.createInterface({
@@ -200,7 +207,17 @@ let app = new Vue({
                     var str = String.fromCharCode.apply(null, data);
                     console.info(str);
                     if (str.search("accuracy") != -1 || str.search("Target") != -1) {
+                        strs = str.split("\n"); // Remove log texts and display only the results
+                        str = "";
+                        for (s of strs) {
+                            let output_at = s.search(">");
+                            if (output_at != -1) {  
+                            s = s.slice(output_at + 2);
+                            str += s + "\n";
+                            }
+                        }
                         app.console_output = app.console_output + "\n" + str;
+                        app.lda_training = false;
                     }
                 });
                     // Handle error output
