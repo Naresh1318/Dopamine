@@ -233,11 +233,66 @@ let app = new Vue({
             /**
              * Copy the reference configuration file to the working directory and start P300 online task
              */
+            const speller_matrix = [["a", "b", "c", "d", "e", "f"],
+                                  ["g", "h", "i", "j", "k", "l"],
+                                  ["m", "n", "o", "p", "q", "r"],
+                                  ["s", "t", "u", "v", "w", "x"],
+                                  ["y", "z", "1", "2", "3", "4"],
+                                  ["5", "6", "7", "8", "9", "0"]];
+            var word_constructed = "";
             let xml_file = "p300-xdawn-4-online.xml"
             fs.copyFile(path.join(this.reference_scenario_path, xml_file), path.join(this.scenario_path, xml_file), (err) => {
                 if (err) throw err;
                 console.log(xml_file + " Copied to the working directory!");
-                this.run_cmd_script("start_p300_online");
+
+                var file_name = "start_p300_online.cmd";
+
+                app.console_output  = "";
+                const bat = spawn('cmd.exe', ['/c', path.join(__dirname, "../batch_scripts", file_name)]);
+
+                app.console_output = app.console_output + "\n" + "Online Phase...";
+
+                // Handle normal output
+                bat.stdout.on('data', (data) => {
+                    // As said before, convert the Uint8Array to a readable string.
+                    var str = String.fromCharCode.apply(null, data);
+                    console.info(str);
+                    if (str.search("Voting_Result") != -1) {
+                        strs = str.split("\n"); // Remove log texts and display only the results
+                        str = "";
+                        for (s of strs) {
+                            let output_at = s.search(">");
+                            if (output_at != -1) {  
+                                s = s.slice(output_at + 2);
+                                let matches = s.match(/\[(.*?)\]/);
+                                if (matches) {
+                                    let submatch = matches[1];
+                                    let row_selected = parseInt(submatch.split(" ")[0]);
+                                    let col_selected = parseInt(submatch.split(" ")[1]);
+                                    let selected_letter = speller_matrix[row_selected][col_selected];
+                                    str += selected_letter + "\n";
+
+                                    if (selected_letter !==  "0") {
+                                        word_constructed += selected_letter;
+                                    } else if (selected_letter ===  "0") {
+                                        console.log("Word Constructed: " + word_constructed);
+                                        // Push word constructed to the server
+                                        word_constructed = "";
+                                    }
+
+                                }
+                            }
+                        }
+                        app.console_output = app.console_output + "\n" + str;
+                    }
+                });
+                    // Handle error output
+                bat.stderr.on('data', (data) => {
+                    // As said before, convert the Uint8Array to a readable string.
+                    var str = String.fromCharCode.apply(null, data);
+                    console.error(str);
+                });
+                console.log("INFO: Online Phase done!!");
             });
         },
         watch_acquisition_server: function ()
