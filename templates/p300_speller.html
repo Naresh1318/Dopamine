@@ -35,7 +35,7 @@
                             <button class="btn btn-primary" v-on:click="show_card('signal_monitoring_active')" style="width: 15rem"> Signal Monitoring </button>
                         </div>
                         <div class="row m-3">
-                            <button class="btn btn-primary" v-on:click="show_card('p300_acquisition_active')" style="width: 15rem"> Calibration </button>
+                            <button class="btn btn-primary" v-on:click="show_card('p300_calibration_active')" style="width: 15rem"> Calibration </button>
                         </div>
                         <div class="row m-3">
                             <button class="btn btn-primary" v-on:click="show_card('p300_training_active')" style="width: 15rem"> Training </button>
@@ -64,10 +64,10 @@
                                 <button class="btn btn-primary" v-on:click="run_p300_signal_monitoring()"> Begin Signal Monitoring </button>
                             </div>
                         </div>
-                        <div class="card" v-show="active_card.p300_acquisition_active" style="width: 100%">
+                        <div class="card" v-show="active_card.p300_calibration_active" style="width: 100%">
                             <img class="card-img-top" src="../resources/img/data.gif" alt="Card image cap" style="width: 40%; margin: auto">
                             <div class="card-body">
-                                <h5 class="card-title"> P300 Acquisition </h5>
+                                <h5 class="card-title"> P300 Calibration </h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                 <label for="basic-url">No. of Trials:</label>
                                 <div class="input-group mb-3" style="width: 30%">
@@ -85,15 +85,16 @@
                             <div class="card-body">
                                 <h5 class="card-title"> P300 Training </h5>
                                 <p class="card-text">
-                                    File used to train: {{get_recent_ov_file()}}
+                                    <button class="btn btn-primary" v-on:click="get_recent_ov_file()"> Get recent calibration file </button>
+                                    File used to train: {{get_recent_ov_file()}} {{p300_recent_ov_file}}
                                 </p>
-                                <button class="btn btn-primary" v-if="p300_training==false" v-on:click="run_p300_training()"> Train XDAWN </button>
-                                <button class="btn btn-primary" v-if="p300_training==true" type="button" disabled>
+                                <button class="btn btn-primary" v-if="p300_spatial_filter_training==false" v-on:click="run_p300_spatial_filter_training()"> Train XDAWN </button>
+                                <button class="btn btn-primary" v-if="p300_spatial_filter_training==true" type="button" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Training XDAWN...
                                 </button>
-                                <button class="btn btn-primary" v-if="lda_training==false" v-on:click="run_p300_lda_training()" :disabled="!start_lda_training"> Train LDA </button>
-                                <button class="btn btn-primary" v-if="lda_training==true" type="button" disabled>
+                                <button class="btn btn-primary" v-if="p300_lda_training==false" v-on:click="run_p300_lda_training()" :disabled="!p300_start_lda_training"> Train LDA </button>
+                                <button class="btn btn-primary" v-if="p300_lda_training==true" type="button" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Training LDA...
                                 </button>

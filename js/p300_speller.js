@@ -1,37 +1,43 @@
-const {run_cmd_file} = require("../js/windows_cmd");
-const {get_recent_file} = require("../js/utils");
 const fs = require("fs");
 const os = require("os");
+const net = require('net');
 const path = require("path");
 const readline = require("readline");
 const find = require('find-process');
 const {spawn} = require('child_process');
-const net = require('net');
 
+const {run_cmd_file} = require("../js/windows_cmd");
+const {get_recent_file} = require("../js/utils");
 
+// Vue App
 let app = new Vue({
     el: '#app',
     data: {
         message: "Speller's gonna be great!",
-        active_card: {
+        active_card: {  // Card flags
             signal_monitoring_active: false,
-            p300_acquisition_active: false,
+            p300_calibration_active: false,
             p300_training_active: false,
             p300_online_active: false,
         },
-        acquisition_server_status: "Connected",
-        console_output: "",
-        n_acq_trials: 10,
-        n_acq_repetitions: 12,
-        p300_training: false,
-        start_lda_training: false,
-        lda_training: false,
-        reference_scenario_path: ".\\openvibe_scenarios\\p300_speller",
-        scenario_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN"),
-        signals_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN\\signals"),
+        acquisition_server_status: "Connected",  // Head connection status
+        console_output: "",                      // Console text
+        n_acq_trials: 10,                        // Calibration Trials
+        n_acq_repetitions: 12,                   // Calibration Repetitions per trial
+        p300_spatial_filter_training: false,     // Spatial Filter Training Flag
+        p300_start_lda_training: false,          // Start LDA Training Flag
+        p300_lda_training: false,                // LDA Training Flag
+        p300_recent_ov_file: "",                 // Most recent detected ov file
+        reference_scenario_path: ".\\openvibe_scenarios\\p300_speller",  // Openvibe Reference Scenario path
+        scenario_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN"),  // Openvibe scenario path in the user PC
+        signals_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN\\signals"),  // Openvibe P300 signal storage path
     },
     methods: {
         run_cmd_script: function(file_name) {
+            /**
+             * Run cmd script
+             * @param file_name: str, file name of the cmd file stored in batch_scripts. Do not include .cmd extension
+             */
             if (this.acquisition_server_status != "Connected") {
                 alert("Headset not connected..");
             }
@@ -40,25 +46,35 @@ let app = new Vue({
             }
         },
         start_acquisition_server: function() {
-            find("name", "openvibe-acquisition-server.exe", true)
+            /**
+             * Start OpenVibe Acquisition Server if it's not already running
+             */
+            find("name", "openvibe-acquisition-server.exe", true)  // Check if it's already running
             .then(function (list) {
-              console.log("INFO: There is/are %s openvibe process(es)", list.length);
-              if (list.length < 1) {
-                  run_cmd_file("start_acquisition_server.cmd");
-              } else {
-                  alert("Acquisition server already running");
-                  console.log("INFO: Acquisition server already running");
-              }
+              console.log("INFO: There is/are %s openvibe acquisition process(es)", list.length);
+                if (list.length < 1) {
+                    run_cmd_file("start_acquisition_server.cmd");
+                } else {
+                    alert("Acquisition server already running");
+                    console.log("INFO: Acquisition server already running");
+                }
             });
         },
         show_card: function(div_element) {
+            /**
+             * Show desired card if toggling its flag
+             * @param div_element: str, div element flag variable
+             */
             for (k in this.active_card) {
                 this.active_card[k] = false;
             }
             this.active_card[div_element] = !this.active_card[div_element];
         },  
         get_recent_ov_file: function() {
-            return get_recent_file(this.signals_path);
+            /**
+             * Get the most recent .ov file
+             */
+            this.p300_recent_ov_file = get_recent_file(this.signals_path);
         },
         run_p300_signal_monitoring: function() {
             /**
@@ -72,6 +88,9 @@ let app = new Vue({
             });
         },
         run_p300_calibration: function() {
+            /**
+             * Copy new configuration file to openvibe scenario path and start P300 calibration
+             */
             // Modify configuration file
             var new_cfg_path = path.join(this.scenario_path, "p300-xdawn-1-acquisition.xml");
             var reference_cfg_path = path.join(this.reference_scenario_path, "p300-xdawn-1-acquisition.xml");
@@ -110,9 +129,16 @@ let app = new Vue({
                 app.run_cmd_script("start_p300_acquisition");                
             });
         },
-        run_p300_training: function() {
+        run_p300_spatial_filter_training: function() {
+            /**
+             * Copy new configuration file to openvibe scenario path and start P300 Spatial filter training
+             */
             // Modify Configuration file
-            this.p300_training = true;
+            if (this.p300_recent_ov_file === "") {
+                alert("Recent Calibration file not found..");
+                return;
+            }
+            this.p300_spatial_filter_training = true;
             var new_cfg_path = path.join(this.scenario_path, "p300-xdawn-2-train-xDAWN.xml");
             var reference_cfg_path = path.join(this.reference_scenario_path, "p300-xdawn-2-train-xDAWN.xml");
             var rl = readline.createInterface({
@@ -128,7 +154,7 @@ let app = new Vue({
                     offset += 1;
                 } else if (offset === 2) {
                     offset = 0;
-                    line = `					<Value>\${Player_ScenarioDirectory}/signals/${this.get_recent_ov_file()}</Value>`;
+                    line = `					<Value>\${Player_ScenarioDirectory}/signals/${this.p300_recent_ov_file}</Value>`;
                 }
                 new_cfg_file = new_cfg_file.concat(line + "\n");
             })
@@ -151,8 +177,8 @@ let app = new Vue({
                     var str = String.fromCharCode.apply(null, data);
                     console.info(str);
                     if (str.search("xDAWN Spatial filter trained successfully") != -1) {
-                        app.p300_training = false;
-                        app.start_lda_training = true;
+                        app.p300_spatial_filter_training = false;
+                        app.p300_start_lda_training = true;
                         app.console_output = app.console_output + "\n" + "xDAWN Spatial filter trained successfully!";
                     }
                 });
@@ -167,8 +193,15 @@ let app = new Vue({
             });
         },
         run_p300_lda_training: function() {
-            // Modify Configuration file
-            this.lda_training = true;
+            /**
+             * Copy new configuration file to openvibe scenario path and start P300 Classifier training
+             */
+            // Do not train if we have to recent ov file
+            if (this.p300_recent_ov_file === "") {
+                alert("Recent Calibration file not found..");
+                return;
+            }
+            this.p300_lda_training = true;
             var new_cfg_path = path.join(this.scenario_path, "p300-xdawn-3-train-classifier.xml");
             var reference_cfg_path = path.join(this.reference_scenario_path, "p300-xdawn-3-train-classifier.xml");
             var rl = readline.createInterface({
@@ -184,7 +217,7 @@ let app = new Vue({
                     offset += 1;
                 } else if (offset === 2) {
                     offset = 0;
-                    line = `					<Value>\${Player_ScenarioDirectory}/signals/${this.get_recent_ov_file()}</Value>`;
+                    line = `					<Value>\${Player_ScenarioDirectory}/signals/${this.p300_recent_ov_file}</Value>`;
                 }
                 new_cfg_file = new_cfg_file.concat(line + "\n");
             })
@@ -217,7 +250,10 @@ let app = new Vue({
                             }
                         }
                         app.console_output = app.console_output + "\n" + str;
-                        app.lda_training = false;
+                        // Reset button states
+                        app.p300_spatial_filter_training = false;
+                        app.p300_start_lda_training = false;
+                        app.p300_lda_training = false;
                     }
                 });
                     // Handle error output
@@ -297,7 +333,10 @@ let app = new Vue({
         },
         watch_acquisition_server: function ()
         {
-            let refresh_rate = 1;  // 5 Seconds
+            /**
+             * Check connection status every second
+             */
+            let refresh_rate = 1;
             let client = net.connect({port: 1024});
             let data_received = false;
 
@@ -327,7 +366,7 @@ let app = new Vue({
     }
 });
 
-app.watch_acquisition_server();
+app.watch_acquisition_server(); // Start this with the app
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
