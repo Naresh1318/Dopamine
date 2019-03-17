@@ -5,6 +5,7 @@ const path = require("path");
 const readline = require("readline");
 const find = require('find-process');
 const {spawn} = require('child_process');
+const request = require('request');
 
 const {run_cmd_file} = require("../js/windows_cmd");
 const {get_recent_file} = require("../js/utils");
@@ -275,6 +276,7 @@ let app = new Vue({
                                   ["s", "t", "u", "v", "w", "x"],
                                   ["y", "z", "1", "2", "3", "4"],
                                   ["5", "6", "7", "8", "9", "0"]];
+            const word_cloud_server_url = "https://webhook.site/af81382c-0f54-4dff-b61e-c757527622df";
             var word_constructed = "";
 
             // Copy lua script
@@ -320,7 +322,20 @@ let app = new Vue({
                                         word_constructed += selected_letter;
                                     } else if (selected_letter ===  "0") {
                                         console.log("Word Constructed: " + word_constructed);
+
                                         // Push word constructed to the server
+                                        request.post(word_cloud_server_url, {
+                                            json: {
+                                                todo: word_constructed,
+                                            }
+                                            }, (error, res, body) => {
+                                            if (error) {
+                                                console.log("ERROR: " + error);
+                                            }
+                                            console.log(`statusCode: ${res.statusCode}`);
+                                            console.log(body);
+                                        });
+
                                         word_constructed = "";
                                     }
 

@@ -27,6 +27,7 @@
     "find-process": "^1.2.1"
   },
   "dependencies": {
+    "request": "^2.88.0",
     "vue": "^2.6.8"
   }
 }
