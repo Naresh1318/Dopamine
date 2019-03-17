@@ -276,10 +276,18 @@ let app = new Vue({
                                   ["y", "z", "1", "2", "3", "4"],
                                   ["5", "6", "7", "8", "9", "0"]];
             var word_constructed = "";
+
+            // Copy lua script
+            let lua_file = "p300-speller-accumulator.lua";
+            fs.copyFile(path.join(this.reference_scenario_path, lua_file), path.join(this.scenario_path, lua_file), (err) => {
+                if (err) throw err;
+                console.log("INFO: " + lua_file + " Copied to the working directory!");
+            });
+
             let xml_file = "p300-xdawn-4-online.xml"
             fs.copyFile(path.join(this.reference_scenario_path, xml_file), path.join(this.scenario_path, xml_file), (err) => {
                 if (err) throw err;
-                console.log(xml_file + " Copied to the working directory!");
+                console.log("INFO: " + xml_file + " Copied to the working directory!");
 
                 var file_name = "start_p300_online.cmd";
 
