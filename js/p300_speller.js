@@ -29,6 +29,9 @@ let app = new Vue({
         p300_start_lda_training: false,          // Start LDA Training Flag
         p300_lda_training: false,                // LDA Training Flag
         p300_recent_ov_file: "",                 // Most recent detected ov file
+        p300_word_constructed: "",
+        p300_word_cloud_server_url: "http://naresh1318.pythonanywhere.com//word",
+        group_name: "",
         reference_scenario_path: ".\\openvibe_scenarios\\p300_speller",  // Openvibe Reference Scenario path
         scenario_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN"),  // Openvibe scenario path in the user PC
         signals_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN\\signals"),  // Openvibe P300 signal storage path
@@ -60,6 +63,13 @@ let app = new Vue({
                     console.log("INFO: Acquisition server already running");
                 }
             });
+        },
+        change_button: function(div_element) {
+            if (this.active_card[div_element]) {
+                return "selected";
+            } else {
+                return "unselected";
+            }
         },
         show_card: function(div_element) {
             /**
@@ -270,14 +280,17 @@ let app = new Vue({
             /**
              * Copy the reference configuration file to the working directory and start P300 online task
              */
+            if (this.group_name === "") {
+                alert("Please provide a group name.");
+                return;
+            }
+
             const speller_matrix = [["a", "b", "c", "d", "e", "f"],
                                   ["g", "h", "i", "j", "k", "l"],
                                   ["m", "n", "o", "p", "q", "r"],
                                   ["s", "t", "u", "v", "w", "x"],
                                   ["y", "z", "1", "2", "3", "4"],
                                   ["5", "6", "7", "8", "9", "0"]];
-            const word_cloud_server_url = "https://webhook.site/af81382c-0f54-4dff-b61e-c757527622df";
-            var word_constructed = "";
 
             // Copy lua script
             let lua_file = "p300-speller-accumulator.lua";
@@ -318,25 +331,26 @@ let app = new Vue({
                                     let selected_letter = speller_matrix[row_selected][col_selected];
                                     str += selected_letter + "\n";
 
-                                    if (selected_letter !==  "0") {
-                                        word_constructed += selected_letter;
-                                    } else if (selected_letter ===  "0") {
-                                        console.log("Word Constructed: " + word_constructed);
+                                    if (!parseInt(selected_letter)) {
+                                        app.p300_word_constructed += selected_letter;
+                                    } else if (parseInt(selected_letter)) {
+                                        console.log("Word Constructed: " + app.p300_word_constructed);
 
                                         // Push word constructed to the server
-                                        request.post(word_cloud_server_url, {
-                                            json: {
-                                                todo: word_constructed,
-                                            }
+                                        let json = {};
+                                        json[this.group_name] = app.p300_word_constructed;
+                                        request.post(app.p300_word_cloud_server_url, {
+                                                json
                                             }, (error, res, body) => {
                                             if (error) {
                                                 console.log("ERROR: " + error);
                                             }
-                                            console.log(`statusCode: ${res.statusCode}`);
-                                            console.log(body);
+                                            else {
+                                                console.log(`statusCode: ${res.statusCode}`);
+                                                console.log(body);
+                                            }
                                         });
-
-                                        word_constructed = "";
+                                        app.p300_word_constructed = "";
                                     }
 
                                 }
@@ -386,7 +400,7 @@ let app = new Vue({
 
             setTimeout(this.watch_acquisition_server, refresh_rate*1000);
         },
-    }
+    },
 });
 
 app.watch_acquisition_server(); // Start this with the app
@@ -394,4 +408,3 @@ app.watch_acquisition_server(); // Start this with the app
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
   });
-  

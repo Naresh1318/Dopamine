@@ -4,16 +4,31 @@
     <meta charset="UTF-8">
     <title>Dopamine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <!-- 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    -->
+
+    <!-- Loading Screen -->
+    <link href="../css/loading_scrren.css" rel="stylesheet"></link>
+    <script src="../js/loading_screen.js"></script>
+
+    <!-- Material design Icons-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Vuesax Frontend -->
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
 </head>
 <body style="font-family:verdana;">
+    
+    <!-- Loading Screen-->
+    <div id="overlay">
+        <div id="progstat"></div>
+        <div id="progress"></div>
+    </div>
+
+    <!-- Actual App -->
     <div id="app" style="padding: 10px">
+
+        <!-- Status Bar -->
         <vs-row style="padding-top: 1rem">
-            <vs-col vs-type="flex" vs-offset="11" vs-justify="center" vs-align="center">
+            <vs-col vs-type="flex" vs-offset="10" vs-justify="center" vs-align="center">
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
                         <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
@@ -25,24 +40,27 @@
                 </vs-row>
             </vs-col>
         </vs-row>
+
+        <!-- Cards start here -->
         <vs-row style="padding-top: 5rem">
             <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                <vs-card actionable class="cardx" style="margin: auto; width: 20rem">
-                    <div slot="media">
-                        <img src="../resources/img/p300_cover.gif" alt="Card image cap" style="max-width:100%; max-height:17rem;">                    
-                    </div>
-                    <div style="padding-top: 2rem; font-size: 12pt">
-                        <div slot="header">
-                            <h3>
-                                P300
-                            </h3>
+                    <vs-card actionable class="cardx" style="margin: auto; width: 20rem">
+                        <div slot="media">
+                            <img src="../resources/img/p300_cover.gif" alt="Card image cap" style="max-width:100%; max-height:17rem;">                    
                         </div>
-                        <p style="padding-top: 1rem">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <div style="padding-top: 1rem;">
-                            <vs-button color="#DC143C" type="filled" href="../templates/p300_speller.html" style="font-size: 12pt">Start P300 module</vs-button>
+                        <div style="padding-top: 2rem; font-size: 12pt">
+                            <div slot="header">
+                                <h3>
+                                    P300
+                                </h3>
+                            </div>
+                            <p style="padding-top: 1rem">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div style="padding-top: 1rem;">
+                                <vs-button color="#DC143C" type="filled" href="../templates/p300_speller.html" style="font-size: 12pt">Start P300 module</vs-button>
+                            </div>
                         </div>
-                    </div>
-                </vs-card>
+                    </vs-card>
+
             </vs-col>
 
             <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">

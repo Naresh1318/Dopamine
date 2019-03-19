@@ -4,26 +4,69 @@
     <meta charset="UTF-8">
     <title>P300 Speller</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <!-- 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    -->
+
+    <!-- Loading Screen -->
+    <link href="../css/loading_scrren.css" rel="stylesheet"></link>
+    <script src="../js/loading_screen.js"></script>
+
+    <!-- Material design Icons-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Vuesax Frontend -->
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+
+    <!-- Animation Library -->
+    <link rel="stylesheet" href="../css/animation.css">
+
+    <style>
+    .selected {
+        background: #DC143C !important;
+        box-shadow: 0px 10px 40px -10px rgba(220, 20, 60, .9);
+        color: #fff !important
+    }
+    .unselected {
+        background: #FFFFFF !important;
+        box-shadow: 0px 10px 40px -10px rgba(181, 180, 180, 0.9);
+    }
+    html {
+    overflow: scroll;
+    overflow-x: hidden;
+    }
+    ::-webkit-scrollbar {
+        width: 0px;  /* remove scrollbar space */
+        background: transparent;  /* optional: just make scrollbar invisible */
+    }
+    /* optional: show position indicator in red */
+    ::-webkit-scrollbar-thumb {
+        background: #FF0000;
+    }
+    </style>
+
 </head>
 <body style="font-family:verdana;">
-    <div id="app">
-        <vs-row style="padding: 1rem">
-            <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-w="6" style="padding-left: 1rem">
+    
+    <!-- Loading Screen-->
+    <div id="overlay">
+        <div id="progstat"></div>
+        <div id="progress"></div>
+    </div>
+
+    <!-- Actual App -->
+    <div id="app" style="padding: 10px">
+        
+        <!-- Status Bar -->
+        <vs-row style="padding: 1rem"  vs-align="center">
+            <vs-col vs-justify="left" vs-align="center" vs-w="6">
                 <a href="index.html"> 
                     <i class="material-icons" style="font-size: 1.8rem; color: darkslategray"> home </i>    
                 </a>
             </vs-col>
-            <vs-col vs-type="flex" vs-justify="right" vs-align="center" vs-w="6">
-                <vs-row vs-type="flex" vs-justify="flex-end">
-                    <vs-col vs-type="flex" vs-justify="right" vs-align="right" vs-w="2">
+            <vs-col vs-offset="4" vs-align="center" vs-w="2">
+                <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
                         <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
                     </vs-col>
-                    <vs-col vs-type="flex" vs-justify="right" vs-align="right" vs-w="2">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
                         <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
                         <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
                     </vs-col>
@@ -34,39 +77,72 @@
         <vs-row style="padding: 1rem">
             <vs-col vs-justify="center" vs-align="center" vs-w="4">
                 <vs-row vs-w="12" style="padding: 1rem">
-                    <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-                        <vs-button v-on:click="show_card('signal_monitoring_active')" style="width: 15rem"> Signal Monitoring </vs-button>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <!-- <vs-button v-on:click="show_card('signal_monitoring_active')" style="width: 15rem"> Signal Monitoring </vs-button> -->
+                        <a v-on:click="show_card('signal_monitoring_active')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('signal_monitoring_active')"> 
+                                <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
+                                  <h4>
+                                    Signal Monitoring
+                                  </h4>
+                                </div>
+                            </vs-card>
+                        </a>
                     </vs-col>
                 </vs-row>
                 <vs-row vs-w="12" style="padding: 1rem">
-                    <vs-col  vs-type="flex" vs-justify="center" vs-align="center">
-                        <vs-button v-on:click="show_card('p300_calibration_active')" style="width: 15rem"> Calibration </vs-button>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <a v-on:click="show_card('p300_calibration_active')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('p300_calibration_active')"> 
+                                <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
+                                  <h4>
+                                    Calibration
+                                  </h4>
+                                </div>
+                            </vs-card>
+                        </a>
                     </vs-col>
                 </vs-row>
                 <vs-row vs-w="12" style="padding: 1rem">
-                    <vs-col  vs-type="flex" vs-justify="center" vs-align="center">
-                        <vs-button v-on:click="show_card('p300_training_active')" style="width: 15rem"> Training </vs-button>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <a v-on:click="show_card('p300_training_active')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('p300_training_active')"> 
+                                <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
+                                  <h4>
+                                    Training
+                                  </h4>
+                                </div>
+                            </vs-card>
+                        </a>
                     </vs-col>
                 </vs-row>
                 <vs-row vs-w="12" style="padding: 1rem">
-                    <vs-col  vs-type="flex" vs-justify="center" vs-align="center">
-                        <vs-button v-on:click="show_card('p300_online_active')" style="width: 15rem"> Online </vs-button>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <a v-on:click="show_card('p300_online_active')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('p300_online_active')"> 
+                                <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
+                                  <h4>
+                                    Online
+                                  </h4>
+                                </div>
+                            </vs-card>
+                        </a>
                     </vs-col>
                 </vs-row>
             </vs-col>
             <vs-col vs-justify="center" vs-align="center" vs-w="8">
 
-                <vs-card v-show="active_card.signal_monitoring_active" style="width: 100%; margin: auto;">
+                <vs-card class="animated slideInUp faster" v-show="active_card.signal_monitoring_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
                         <img src="../resources/img/signal.gif" alt="Card image cap" style="width: 100%; margin: auto">
                     </div>
-                    <div style="padding-top: 2rem; padding-left: 2rem; font-size: 12pt">
+                    <div style="padding: 1rem; font-size: 12pt">
                         <div slot="header">
-                            <h2> Signal Monitoring </h5>
+                            <h2 style="padding-top: 1rem"> Signal Monitoring </h5>
                         </div>
-                        <div style="padding-top: 1rem">
+                        <div style="padding-top: 2rem; line-height: 1.6;">
                             In this section you will observe the effects of EOG (mainly eye blinks) and facial muscle movements on EEG data.
-                            <ol>
+                            <ol style="padding-left: 2rem;">
                                 <li>Make sure the connection status says <b>connected</b></li>
                                 <li>Click <b>Begin Signal Monitoring</b> when ready</li>
                                 <li>A new windows now shows raw data received from the headset in the top row and filtered EEG data in the bottom row</li>
@@ -76,82 +152,118 @@
                                 <li>Proceed to the Calibration Stage</li>
                             </ol>    
                         </div>
-                        <div style="padding-top: 1rem">
-                            <vs-button v-on:click="run_p300_signal_monitoring()"> Begin Signal Monitoring </vs-button>
+                        <div style="padding-top: 1rem;">
+                            <vs-button color="#DC143C" type="filled" v-on:click="run_p300_signal_monitoring()" style="font-size: 12pt"> Begin Signal Monitoring </vs-button>
                         </div>
                     </div>
                 </vs-card>
 
-                <vs-card v-show="active_card.p300_calibration_active" style="width: 100%; margin: auto;">
+                <vs-card class="animated slideInUp faster" v-show="active_card.p300_calibration_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
                         <img src="../resources/img/data.gif" alt="Card image cap" style="width: 40%; margin: auto">
                     </div>
-                    <div style="padding-top: 2rem; padding-left: 1rem; font-size: 12pt">
+                    <div style="padding: 1rem; font-size: 12pt">
                         <div slot="header">
-                            <h2> P300 Calibration </h5>
+                            <h2 style="padding-top: 1rem"> P300 Calibration </h5>
+                        </div>
+                        <div style="padding-top: 1rem; line-height: 1.6;">
+                            <vs-row>
+                                <vs-col vs-w="6">
+                                    <vs-input color="#DC143C" label-placeholder="No. of Trials:" v-model="n_acq_trials"/>
+                                </vs-col>
+                                <vs-col vs-w="6">
+                                    <vs-input color="#DC143C" label-placeholder="No. of Repetitions:" v-model="n_acq_repetitions"/>                               
+                                </vs-col>
+                            </vs-row>
+                            <vs-row>
+                                <vs-col vs-w="12" style="padding-top: 1rem;">
+                                    Some quick example text to build on the card title and make up the bulk of the card's content 
+                                </vs-col>
+                            </vs-row>
                         </div>
                         <div style="padding-top: 1rem">
-                            <label for="basic-url">No. of Trials:</label>
-                            <input class="form-control m-1" placeholder="10" aria-label="10" aria-describedby="basic-addon1" v-model="n_acq_trials"></input>
-                            <label for="basic-url">No. of Repetitions:</label>
-                            <input v-model="n_acq_repetitions" class="form-control m-1" placeholder="10" aria-label="10" aria-describedby="basic-addon1" ></input> <br/><br/>                                
-                            Some quick example text to build on the card title and make up the bulk of the card's content 
-                        </div>
-                        <div style="padding-top: 1rem">
-                            <vs-button v-on:click="run_p300_calibration()"> Start calibration </vs-button>
+                            <vs-button color="#DC143C" type="filled" v-on:click="run_p300_calibration()" style="font-size: 12pt"> Start calibration </vs-button>
                         </div>
                     </div>
                 </vs-card>
 
-                <vs-card v-show="active_card.p300_training_active" style="width: 100%; margin: auto;">
+                <vs-card class="animated slideInUp faster" v-show="active_card.p300_training_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
                         <img src="../resources/img/classifier.png" alt="Card image cap" style="width: 52%; margin: auto">
                     </div>
-                    <div style="padding-top: 2rem; padding-left: 1rem; font-size: 12pt">
+                    <div style="padding: 1rem; font-size: 12pt; line-height: 1.6;">
                         <div slot="header">
-                            <h2> P300 Training </h5>
+                            <h2 style="padding-top: 1rem"> P300 Training </h5>
                         </div>
-                        <div style="padding-top: 1rem">
-                        <br/>
-                            <vs-button v-on:click="get_recent_ov_file()"> Get recent calibration file </vs-button> 
-                            File used to train: {{get_recent_ov_file()}} {{p300_recent_ov_file}}
+                        <div style="padding-top: 1rem;">
+                            <vs-row>
+                                <vs-col vs-w="4">
+                                    <vs-button color="#DC143C" type="filled" v-on:click="get_recent_ov_file()" style="font-size: 12pt"> Get recent calibration file </vs-button>
+                                </vs-col>
+                                <vs-col vs-w="8">
+                                        File used to train: {{get_recent_ov_file()}} {{p300_recent_ov_file}}                                        
+                                </vs-col>
+                            </vs-row>
                         </div>
-                        <br/>
-                        <vs-button v-if="p300_spatial_filter_training==false" v-on:click="run_p300_spatial_filter_training()"> Train XDAWN </vs-button>
-                        <vs-button v-if="p300_spatial_filter_training==true" type="button" disabled>
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Training XDAWN...
-                        </vs-button>
-                        <vs-button v-if="p300_lda_training==false" v-on:click="run_p300_lda_training()" :disabled="!p300_start_lda_training"> Train LDA </vs-button>
-                        <vs-button v-if="p300_lda_training==true" type="button" disabled>
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Training LDA...
-                        </vs-button>
+                        <vs-row>
+                            <vs-col vs-w="12" style="padding-top: 1rem;">
+                                Some quick example text to build on the card title and make up the bulk of the card's content.
+                                Some quick example text to build on the card title and make up the bulk of the card's content.
+                                Some quick example text to build on the card title and make up the bulk of the card's content.
+                            </vs-col>
+                        </vs-row>
+                        <vs-row style="padding-top: 1rem;">
+                            <vs-col vs-w="3">
+                                <vs-button color="#DC143C" type="filled" v-if="p300_spatial_filter_training==false" v-on:click="run_p300_spatial_filter_training()" style="font-size: 12pt"> Train XDAWN </vs-button>
+                                <vs-button color="#DC143C" type="filled" v-if="p300_spatial_filter_training==true" type="button" style="font-size: 12pt" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Training XDAWN...
+                                </vs-button>
+                            </vs-col>
+                            <vs-col vs-w="3">
+                                <vs-button color="#DC143C" type="filled" v-if="p300_lda_training==false" v-on:click="run_p300_lda_training()" :disabled="!p300_start_lda_training" style="font-size: 12pt"> Train LDA </vs-button>
+                                <vs-button color="#DC143C" type="filled" v-if="p300_lda_training==true" type="button" style="font-size: 12pt" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Training LDA...
+                                </vs-button>
+                            </vs-col>
+                        </vs-row>
                     </div>
                 </vs-card>
 
-                <vs-card v-show="active_card.p300_online_active" style="width: 100%; margin: auto;">
+                <vs-card class="animated slideInUp faster" v-show="active_card.p300_online_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
                         <img src="../resources/img/bci.gif" alt="Card image cap" style="width: 100%; margin: auto">
                     </div>
-                    <div style="padding-top: 2rem; padding-left: 1rem; font-size: 12pt">
+                    <div style="padding: 1rem; font-size: 12pt; line-height: 1.6;">
                         <div slot="header">
-                            <h2> P300 Online </h5>
+                            <h2 style="padding-top: 1rem"> P300 Online </h5>
                         </div>
-                        <div style="padding-top: 1rem">
-                            Some quick example text to build on the card title and make up the bulk of the card's content 
-                        </div>
-                        <div style="padding-top: 1rem">
-                            <vs-button v-on:click="run_p300_online()"> Start Online </vs-button>
-                        </div>
+                        <vs-row style="padding-top: 1rem;">
+                            <vs-col>
+                                <!-- <vs-input color="#DC143C" label-placeholder="Enter Group Name" v-model="group_name"/>    -->
+                                <vs-input color="#DC143C" label="Enter Group Name" v-model="group_name"/>                            
+                            </vs-col>
+                        </vs-row>
+                        <vs-row style="padding-top: 1rem">
+                            <vs-col>
+                                Some quick example text to build on the card title and make up the bulk of the card's content 
+                                Some quick example text to build on the card title and make up the bulk of the card's content 
+                                Some quick example text to build on the card title and make up the bulk of the card's content.  
+                            </vs-col>
+                        </vs-row>
+                        <vs-row style="padding-top: 1rem">
+                            <vs-col vs-w="6">
+                                <vs-button style="font-size: 12pt" color="#DC143C" type="filled" v-on:click="run_p300_online()"> Start Online </vs-button>
+                            </vs-col>
+                        </vs-row>
                     </div>
                 </vs-card>
-
             </vs-col>
         </vs-row>
-        <vs-row v-show="active_card.p300_training_active || active_card.p300_online_active" style="padding: 1rem;">
-            <vs-card style="width: 100%; margin: auto;">
-                <div style="padding-top: 2rem; padding-left: 1rem; font-size: 12pt">
+        <vs-row style="padding: 1rem;">
+        <vs-card class="animated slideInUp faster" v-show="active_card.p300_training_active || active_card.p300_online_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
+                <div style="padding-top: 1rem; padding-left: 1rem; font-size: 12pt">
                     <div slot="header">
                         <h2> Training Results </h5>
                     </div>

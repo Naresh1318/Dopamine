@@ -5,8 +5,8 @@ let win = null;
 
 function createWindow() {
     win = new BrowserWindow({
-        width: 1250, 
-        height: 850});
+        width: 1200, 
+        height: 800});
     win.loadFile("./templates/index.html");
     win.webContents.openDevTools();
     win.on("closed", () => {
