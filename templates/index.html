@@ -3,70 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>Dopamine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    -->
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <!-- Loading Screen -->
+    <link href="../css/loading_scrren.css" rel="stylesheet"></link>
+    <script src="../js/loading_screen.js"></script>
+
+    <!-- Material design Icons-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
-    <!-- Material Design for Bootstrap fonts and icons
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"> -->
-
-    <!-- Material Design for Bootstrap CSS -->
-    <link rel="stylesheet" href="../css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
-
+    
+    <!-- Vuesax Frontend -->
+    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
 </head>
-<body>
-    <div id="app" style="padding: 10px">
-        <div class="container">
-            <div class="row pt-2">
-                <div class="col" style="margin-left: 90%">
-                    <div class="row">
-                        <div class="col">
-                            <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
-                        </div>
-                        <div class="col">
-                            <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
-                            <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row m-5 pt-5">
-                <div class="col">
-                    <div class="card" style="margin: auto; width: 20rem">
-                        <img class="card-img-top" src="../resources/img/p300_cover.png" alt="Card image cap" style="width: 90%">
-                        <div class="card-body">
-                            <h5 class="card-title"> P300 </h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a class="btn btn-primary" href="../templates/p300_speller.html">Start P300 module</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                        <div class="card" style="margin: auto; width: 20rem">
-                            <img class="card-img-top" src="../resources/img/pong_cover.jpg" alt="Card image cap" style="width: 98%">
-                            <div class="card-body">
-                                <h5 class="card-title"> Motor Imagery </h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a class="btn btn-primary" href="../templates/motor_imagery.html">Start Motor Imagery module</a>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
+<body style="font-family:verdana;">
+    
+    <!-- Loading Screen-->
+    <div id="overlay">
+        <div id="progstat"></div>
+        <div id="progress"></div>
     </div>
 
-    <script src="../js/dependencies/vue.js"></script>
+    <!-- Actual App -->
+    <div id="app" style="padding: 10px">
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <!-- Status Bar -->
+        <vs-row style="padding-top: 1rem">
+            <vs-col vs-type="flex" vs-offset="10" vs-justify="center" vs-align="center">
+                <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                        <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                        <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
+                        <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+        </vs-row>
+
+        <!-- Cards start here -->
+        <vs-row style="padding-top: 5rem">
+            <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                    <vs-card actionable class="cardx" style="margin: auto; width: 20rem">
+                        <div slot="media">
+                            <img src="../resources/img/p300_cover.gif" alt="Card image cap" style="max-width:100%; max-height:17rem;">                    
+                        </div>
+                        <div style="padding-top: 2rem; font-size: 12pt">
+                            <div slot="header">
+                                <h3>
+                                    P300
+                                </h3>
+                            </div>
+                            <p style="padding-top: 1rem">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div style="padding-top: 1rem;">
+                                <vs-button color="#DC143C" type="filled" href="../templates/p300_speller.html" style="font-size: 12pt">Start P300 module</vs-button>
+                            </div>
+                        </div>
+                    </vs-card>
+
+            </vs-col>
+
+            <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                <vs-card actionable class="cardx" style="margin: auto; width: 20rem">
+                    <div slot="media">
+                        <img src="../resources/img/pong_cover.gif" alt="Card image cap" style="min-width:105%; min-height:17rem;">                    
+                    </div>
+                    <div style="padding-top: 2rem; font-size: 12pt">
+                        <div slot="header">
+                            <h3>
+                                Pong
+                            </h3>
+                        </div>
+                        <p style="padding-top: 1rem">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <div style="padding-top: 1rem;">
+                            <vs-button color="#DC143C" type="filled" href="../templates/motor_imagery.html" style="font-size: 12pt">Start Pong module</vs-button>
+                        </div>
+                    </div>
+                </vs-card>
+            </vs-col>
+        </vs-row>
+    </div>
+    <script src="../js/dependencies/vue.js"></script>
     <script>window.$ = window.jQuery = require('jquery');</script>
-    <script src="../js/dependencies/popper.js"></script>
-    <script src="../js/dependencies/bootstrap-material-design.js"></script>
-    <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+    <script src="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.umd.js"></script>
 </body>
 <script src="../js/index.js"></script>
 </html>

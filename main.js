@@ -4,12 +4,15 @@ require('electron-reload')(__dirname);
 let win = null;
 
 function createWindow() {
-    win = new BrowserWindow({width: 1250, height: 850});
+    win = new BrowserWindow({
+        width: 1200, 
+        height: 800});
     win.loadFile("./templates/index.html");
     win.webContents.openDevTools();
     win.on("closed", () => {
         win = null;
-    })
+    });
+    // win.setMenu(null);
 }
 
 app.on("ready", createWindow);
