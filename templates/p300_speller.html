@@ -58,7 +58,7 @@
         <vs-row style="padding: 1rem"  vs-align="center">
             <vs-col vs-justify="left" vs-align="center" vs-w="6">
                 <a href="index.html"> 
-                    <i class="material-icons" style="font-size: 1.8rem; color: darkslategray"> home </i>    
+                    <i class="material-icons" style="font-size: 1.8rem; color: black"> home </i>    
                 </a>
             </vs-col>
             <vs-col vs-offset="4" vs-align="center" vs-w="2">
@@ -141,15 +141,29 @@
                             <h2 style="padding-top: 1rem"> Signal Monitoring </h5>
                         </div>
                         <div style="padding-top: 2rem; line-height: 1.6;">
-                            In this section you will observe the effects of EOG (mainly eye blinks) and facial muscle movements on EEG data.
+                            In this section you will observe your brain activity being recorded from the EEG system! Please read the following instructions carefully before continuing:
                             <ol style="padding-left: 2rem;">
-                                <li>Make sure the connection status says <b>connected</b></li>
-                                <li>Click <b>Begin Signal Monitoring</b> when ready</li>
-                                <li>A new windows now shows raw data received from the headset in the top row and filtered EEG data in the bottom row</li>
-                                <li>Notice how the filtered EEG data looks smoother then the raw data. This is because of the high frequency noise being removed using a bandpass filter (1-20Hz).</li>
-                                <li>Notice eye blinks at channels F3 and F4</li>
-                                <li>Ask the participant to clinch their teeth and notice the random changes in EEG data across all channels</li>
-                                <li>Proceed to the Calibration Stage</li>
+                                <li>Make sure the connection status says <b>Headset Connected!</b></li>
+                                <dl>
+                                    <li>When you click on <b>Begin Signal Monitoring</b>, a new window will show raw data being received from the headset in the top row and filtered EEG data in the bottom row</li>
+                                    <ul>
+                                        <dd><li>Notice how the filtered EEG data looks smoother then the raw data. This is because of the high frequency noise is being removed using a bandpass filter (1-20Hz).</dd>
+                                    </ul>
+                                        <dt><li>It's also important to check the impedance levels of the electrodes to make sure they're getting good quality data</li></dt>
+                                        <ul>
+                                            <dd><li>Click on the "Channels" tab in the cognionics data acquisition window and make sure the eight electrodes on the bottom right-hand side of the screen are all green</dd>
+                                            <dd><li>If one or more electrode channels are not solid green, try readjusting the individual electrodes on the EEG equipment and make sure they're all touching your head until the impedances turn green</dd>
+                                            <dd><li>When all the electrodes are green on your impedance check, you can move on to the next step</dd>
+                                        </ul>
+                                            <dt><li>When you blink your eyes during an EEG recording, you'll notice a specific type of EEG activity happening in channels F3 and F4</li></dt>
+                                    <ul>
+                                        <dd><li>The type of activity that should be elicited from eye blinks is a positive spike</dd>
+                                        <dd><li>Notice that the electrodes farther away from your eyes (i.e. P3, P4, O1, and O2) have a spike with a lower amplitude than that of electrodes F3 and F4</dd>
+                                    </ul>
+                                </dl>
+                                <li>Lastly, if you clench your teeth, or scrunch up your face like your angry, you'll notice a sudden change in EEG frequencies corresponding to this behavior</li>
+                                <li>Click <b>Begin Signal Monitoring</b> when ready!</li>
+                                <li>Once you've made sure the EEG is recording properly (your eyeblinks and clenched face activity is showing and your impedance check is all green) proceed to the Calibration Stage</li>
                             </ol>    
                         </div>
                         <div style="padding-top: 1rem;">
@@ -177,12 +191,22 @@
                             </vs-row>
                             <vs-row>
                                 <vs-col vs-w="12" style="padding-top: 1rem;">
-                                    Some quick example text to build on the card title and make up the bulk of the card's content 
+                                For P300 Speller to work properly, we need to calibrate the system so that it can make sense of your brain activity; it is critically important that you read and follow the following instructions carefully:
+                                    <ol style="padding-left: 2rem;">
+                                        <li>When you click <b>Start Calibration</b>, a black window will pop-up on your screen: maximize the window if it is not already maximized</li>
+                                        <li>In this black window, a matrix of letters, A-Z, and numbers, 0-9, will appear, followed by one of these characters being highlighted in blue</li>
+                                        <li>Your job is to stare and focus on the highlighted character for the duration of the trial</li>
+                                        <dt><li>During the trial, an entire row of characters will flash for a split-second followed by an entire column of characters being flashed for a split-second (or vice versa)</li></dt>
+                                        <dt><li>Count the number of times the letter highlighted (character you should be focusing on) in blue flashes and repeat this for the entire duration of the trial</li></dt>
+                                        <li>After one trial is completed, another character will be highlighted in blue, thus signaling the start of a new trial and a new character you must fixate and focus on</li>
+                                        <li>The calibration session will continue automatically until it has ended; when the calibration session ends, you can move on to the <b>P300 Training</b> session</li>
+                                        <li>To begin the calibration session, click <b>Start Calibration</b> </li>
+                                    </ol>
                                 </vs-col>
                             </vs-row>
                         </div>
                         <div style="padding-top: 1rem">
-                            <vs-button color="#DC143C" type="filled" v-on:click="run_p300_calibration()" style="font-size: 12pt"> Start calibration </vs-button>
+                            <vs-button color="#DC143C" type="filled" v-on:click="run_p300_calibration()" style="font-size: 12pt"> Start Calibration </vs-button>
                         </div>
                     </div>
                 </vs-card>
@@ -195,33 +219,29 @@
                         <div slot="header">
                             <h2 style="padding-top: 1rem"> P300 Training </h5>
                         </div>
-                        <div style="padding-top: 1rem;">
-                            <vs-row>
-                                <vs-col vs-w="4">
-                                    <vs-button color="#DC143C" type="filled" v-on:click="get_recent_ov_file()" style="font-size: 12pt"> Get recent calibration file </vs-button>
-                                </vs-col>
-                                <vs-col vs-w="8">
-                                        File used to train: {{get_recent_ov_file()}} {{p300_recent_ov_file}}                                        
-                                </vs-col>
-                            </vs-row>
-                        </div>
                         <vs-row>
-                            <vs-col vs-w="12" style="padding-top: 1rem;">
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
+                            <vs-col vs-w="12" style="padding-top: 1rem; padding-left: 2rem;">
+                                <ul>
+                                    <li>This session is training a classifier to take your previously collected calibration data and predict the occurrence of a P300 wave</li>
+                                    <li>In the next session, you will form words by choosing letters and numbers</li>
+                                    <li>The P300 Speller system will predict which character you chose based on the elicited P300 waves in your EEG activity</li>     
+                                    <li>To begin the training session, first click <b>Get Calibration File</b> followed by <b>Train XDAWN</b> and, once that has been completed, finally click <b>Train LDA</b></li>          
+                                </ul>
                             </vs-col>
                         </vs-row>
                         <vs-row style="padding-top: 1rem;">
-                            <vs-col vs-w="3">
-                                <vs-button color="#DC143C" type="filled" v-if="p300_spatial_filter_training==false" v-on:click="run_p300_spatial_filter_training()" style="font-size: 12pt"> Train XDAWN </vs-button>
+                            <vs-col vs-w="4">
+                                <vs-button color="#DC143C" type="filled" v-on:click="get_recent_ov_file()" style="font-size: 12pt"> 1. Get Calibration File </vs-button>
+                            </vs-col>
+                            <vs-col vs-w="4">
+                                <vs-button color="#DC143C" type="filled" v-if="p300_spatial_filter_training==false" v-on:click="run_p300_spatial_filter_training()" style="font-size: 12pt"> 2. Train XDAWN </vs-button>
                                 <vs-button color="#DC143C" type="filled" v-if="p300_spatial_filter_training==true" type="button" style="font-size: 12pt" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Training XDAWN...
                                 </vs-button>
                             </vs-col>
-                            <vs-col vs-w="3">
-                                <vs-button color="#DC143C" type="filled" v-if="p300_lda_training==false" v-on:click="run_p300_lda_training()" :disabled="!p300_start_lda_training" style="font-size: 12pt"> Train LDA </vs-button>
+                            <vs-col vs-w="4">
+                                <vs-button color="#DC143C" type="filled" v-if="p300_lda_training==false" v-on:click="run_p300_lda_training()" :disabled="!p300_start_lda_training" style="font-size: 12pt"> 3. Train LDA </vs-button>
                                 <vs-button color="#DC143C" type="filled" v-if="p300_lda_training==true" type="button" style="font-size: 12pt" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Training LDA...
@@ -247,9 +267,21 @@
                         </vs-row>
                         <vs-row style="padding-top: 1rem">
                             <vs-col>
-                                Some quick example text to build on the card title and make up the bulk of the card's content 
-                                Some quick example text to build on the card title and make up the bulk of the card's content 
-                                Some quick example text to build on the card title and make up the bulk of the card's content.  
+                                Now that the system has been calibrated and trained to your P300 wave, you'll be able to form words of your own! Please read the following instructions carefully before continuing:
+                                <ol style="padding-left: 2rem;">
+                                <li>After you press <b>Start Online</b> a black window will appear like in the calibration session</li>
+                                <li>Just like the calibration session a matrix of letters, A-Z, and numbers, 0-9, will appear</li>
+                                <li>This time, instead of a letter being highlighted for you, you get to choose the letter</li>
+                                <li>Pick whichever letter from the matrix you desire and focus on that character for the duration of the trial just like you did in the calibration session</li>
+                                <li>You will focus and stare at the character you chose while an entire row of characters will flash for a split-second followed by an entire column of characters being flashed for a split-second (or vice versa). Don't forget 
+                                    to count the number of times your desired character flashes
+                                </li>
+                                <li>At the end of a trial, a character will be highlighted in green (this should be the character you chose and were fixated on)</li>
+                                <li>This highlighted character will then be recorded in a textbox at the bottom of the screen</li>
+                                <li>After the character you chose is highlighted in green, choose another character to focus on for the next trial, and so on and so forth, until your desired word has been created!</li>
+                                <li>Focus on any number to post your word to indicate the completion of your word and post it on the class live feed</li>  
+                                <li>Whenever you're ready to put your thoughts into words, go ahead and press <b>Start Online</b></li>
+                            </ol>
                             </vs-col>
                         </vs-row>
                         <vs-row style="padding-top: 1rem">
@@ -265,7 +297,7 @@
         <vs-card class="animated slideInUp faster" v-show="active_card.p300_training_active || active_card.p300_online_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
                 <div style="padding-top: 1rem; padding-left: 1rem; font-size: 12pt">
                     <div slot="header">
-                        <h2> Training Results </h5>
+                        <h2> Console </h5>
                     </div>
                     <div style="padding-top: 1rem">
                         <pre> {{console_output}} </pre>
