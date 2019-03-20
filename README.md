@@ -1,2 +1,33 @@
-# Playing_Pong_With_EEG
-An electron app to fire up the classic game of pong.
+# Dopamine
+A desktop app providing a easy to use wrapper on top of OpenVibe  to perform BCI experiments.
+
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
+
+## Usage
+1. Download OpenVibe version 2.2 from [here](http://openvibe.inria.fr/downloads/).
+
+2. Install it without changing any default installation steps.
+
+3. Install Dopamine from [here](#home).
+
+4. Connect your BCI headset to your PC, check impedance and all that fun stuff.
+
+5. Start an LSL stream from your Headset application. If your manufactorer does not support LSL look [here](https://github.com/sccn/labstreaminglayer).
+
+6. Connect your LSL stream to OpenVibe Acquisition Server:
+
+    a. <IMAGE COMING SOON>
+
+7. Start Dopamine click on the experiment you want to perform.
+
+8. Follow the instructions under each stage.
+
+
+## Built Using
+1. Electron.js
+2. Node.js
+3. Vue.js
+
+
+
