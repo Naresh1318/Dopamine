@@ -8,7 +8,7 @@ function createWindow() {
         width: 1200, 
         height: 800});
     win.loadFile("./templates/index.html");
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
     win.on("closed", () => {
         win = null;
     });
