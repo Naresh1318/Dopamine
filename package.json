@@ -1,11 +1,12 @@
 {
   "name": "dopamine",
-  "version": "0.0.1",
-  "description": "An electron app to fire up the classic game of pong",
+  "version": "1.0.0",
+  "description": "A desktop app providing a easy to use wrapper on top of OpenVibe  to perform BCI experiments.",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+   "package-win": "electron-packager . Dopamine --overwrite --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Dopamine\""    
   },
   "repository": {
     "type": "git",
@@ -23,12 +24,17 @@
   "homepage": "https://github.com/Naresh1318/Dopamine#readme",
   "devDependencies": {
     "electron": "^4.0.4",
+    "electron-packager": "^13.1.1",
     "electron-reload": "^1.4.0",
     "find-process": "^1.2.1"
   },
   "dependencies": {
     "jquery": "^3.3.1",
     "request": "^2.88.0",
-    "vue": "^2.6.9"
+    "vue": "^2.6.9",
+    "electron": "^4.0.4",
+    "electron-packager": "^13.1.1",
+    "electron-reload": "^1.4.0",
+    "find-process": "^1.2.1"
   }
 }
