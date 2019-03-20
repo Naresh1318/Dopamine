@@ -8,5 +8,5 @@ node_modules/
 .vscode/settings.json
 
 # Builds
-resources/
-Dopmaine-win32-x64/
+release-builds/
+Dopamine-win32-x64/
