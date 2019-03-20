@@ -15,7 +15,7 @@ A desktop app providing a easy to use wrapper on top of OpenVibe  to perform BCI
 
 4. Connect your BCI headset to your PC, check impedance and all that fun stuff.
 
-5. Start an LSL stream from your Headset application. If your manufactorer does not support LSL look [here](https://github.com/sccn/labstreaminglayer).
+5. Start an LSL stream from your Headset application. If your manufacturer does not support LSL look [here](https://github.com/sccn/labstreaminglayer).
 
 6. Connect your LSL stream to OpenVibe Acquisition Server:
 
