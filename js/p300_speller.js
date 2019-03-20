@@ -86,6 +86,7 @@ let app = new Vue({
              * Get the most recent .ov file
              */
             this.p300_recent_ov_file = get_recent_file(this.signals_path);
+            alert("File used to train: " + this.p300_recent_ov_file);
         },
         run_p300_signal_monitoring: function() {
             /**
