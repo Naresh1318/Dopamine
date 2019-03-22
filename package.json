@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-   "package-win": "electron-packager . Dopamine --overwrite --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Dopamine\""    
+    "package-win": "electron-packager . Dopamine --overwrite --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Dopamine\""
   },
   "repository": {
     "type": "git",
