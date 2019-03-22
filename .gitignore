@@ -6,3 +6,7 @@ node_modules/
 
 # VS Code Settings file
 .vscode/settings.json
+
+# Builds
+release-builds/
+Dopamine-win32-x64/

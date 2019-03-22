@@ -6,7 +6,9 @@ let win = null;
 function createWindow() {
     win = new BrowserWindow({
         width: 1200, 
-        height: 800});
+        height: 800,
+        icon: __dirname + "/resources/icons/icon.png"});
+    win.setMenuBarVisibility(true);
     win.loadFile("./templates/index.html");
     // win.webContents.openDevTools();
     win.on("closed", () => {
