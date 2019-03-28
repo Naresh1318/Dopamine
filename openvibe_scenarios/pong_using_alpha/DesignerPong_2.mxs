@@ -1,7 +1,7 @@
 <OpenViBE-Scenario>
-	<FormatVersion>1</FormatVersion>
+	<FormatVersion>2</FormatVersion>
 	<Creator>OpenViBE Designer</Creator>
-	<CreatorVersion>2.0.1</CreatorVersion>
+	<CreatorVersion>2.2.0</CreatorVersion>
 	<Settings></Settings>
 	<Inputs></Inputs>
 	<Outputs></Outputs>
@@ -74,7 +74,7 @@
 		</Box>
 		<Box>
 			<Identifier>(0x00001222, 0x0000295e)</Identifier>
-			<Name>Beta power</Name>
+			<Name>Alpha power</Name>
 			<AlgorithmClassIdentifier>(0x0055be5f, 0x087bdd12)</AlgorithmClassIdentifier>
 			<Inputs>
 				<Input>
@@ -731,7 +731,7 @@
 		</Box>
 		<Box>
 			<Identifier>(0x00007134, 0x0000322d)</Identifier>
-			<Name>Beta signal</Name>
+			<Name>Alpha signal</Name>
 			<AlgorithmClassIdentifier>(0x0055be5f, 0x087bdd12)</AlgorithmClassIdentifier>
 			<Inputs>
 				<Input>

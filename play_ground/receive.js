@@ -11,3 +11,4 @@ streamInlet = new lsl.StreamInlet(streams[0]);
 streamInlet.streamChunks(1, 1000);
 streamInlet.on('chunk', console.log);
 streamInlet.on('closed', console.log);
+ 
