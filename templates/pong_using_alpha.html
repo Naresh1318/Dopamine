@@ -214,17 +214,15 @@
                         </div>
                         <vs-row>
                             <vs-col vs-w="12" style="padding-top: 1rem; padding-left: 2rem;">
+                                Description
                                 <ul>
-                                    <li>This session is training a classifier to take your previously collected calibration data and predict the occurrence of a P300 wave</li>
-                                    <li>In the next session, you will form words by choosing letters and numbers</li>
-                                    <li>The P300 Speller system will predict which character you chose based on the elicited P300 waves in your EEG activity</li>     
-                                    <li>To begin the training session, first click <b>Get Calibration File</b> followed by <b>Train XDAWN</b> and, once that has been completed, finally click <b>Train LDA</b></li>          
+                                    <li>Test</li>
                                 </ul>
                             </vs-col>
                         </vs-row>
                         <vs-row style="padding-top: 1rem;">
                             <vs-col vs-w="4">
-                                <vs-button color="#DC143C" type="filled" onclick="location.href='pong_simulator.html'" style="font-size: 12pt"> Start Game </vs-button>
+                                <vs-button color="#DC143C" type="filled" onclick="location.href='pong_single_player_simulator.html'" style="font-size: 12pt"> Start Game </vs-button>
                             </vs-col>
                         </vs-row>
                     </div>
@@ -254,7 +252,7 @@
                         </vs-row>
                         <vs-row style="padding-top: 1rem">
                             <vs-col vs-w="6">
-                                <vs-button style="font-size: 12pt" color="#DC143C" type="filled" v-on:click="run_p300_online()"> Start Game </vs-button>
+                                <vs-button style="font-size: 12pt" color="#DC143C" type="filled" onclick="location.href='pong_multi_player_simulator.html'"> Start Game </vs-button>
                             </vs-col>
                         </vs-row>
                     </div>

@@ -32,6 +32,18 @@
  * |_| 456    bar 3 and 6 visible => 0 001 001
  * 
  */
+
+// LSL to control player 1
+ const lsl = require('node-lsl');
+
+ // Resolve an LSL stream with type='EEG'
+const streams = lsl.resolve_byprop('type', 'EEG');
+console.log('Resolved ', streams.length, ' streams of EEG');
+console.log('Connecting...');
+streamInlet = new lsl.StreamInlet(streams[0]);
+streamInlet.streamChunks(1, 1000);
+streamInlet.on('chunk', console.log);
+
 var NUMS = [
 	"1 101 111",
 	"0 001 001",
