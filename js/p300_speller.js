@@ -355,7 +355,6 @@ let app = new Vue({
                                         });
                                         app.p300_word_constructed = "";
                                     }
-
                                 }
                             }
                         }

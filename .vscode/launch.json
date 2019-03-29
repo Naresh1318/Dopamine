@@ -5,7 +5,7 @@
         "type": "node",
         "request": "launch",
         "name": "Launch Program",
-        "program": "${workspaceFolder}/js/utils.js"
+        "program": "${workspaceFolder}/play_ground/receive.js"
       },
       {
         "name": "Debug Main Process",

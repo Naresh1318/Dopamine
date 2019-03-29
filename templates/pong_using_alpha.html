@@ -1,129 +1,271 @@
-<!DOCTYPE <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Pong using Alpha Waves</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <!-- Loading Screen -->
+    <link href="../css/loading_scrren.css" rel="stylesheet"></link>
+    <script src="../js/loading_screen.js"></script>
+
+    <!-- Material design Icons-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Vuesax Frontend -->
+    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+
+    <!-- Animation Library -->
+    <link rel="stylesheet" href="../css/animation.css">
+
+    <style>
+    .selected {
+        background: #DC143C !important;
+        box-shadow: 0px 10px 40px -10px rgba(220, 20, 60, .9);
+        color: #fff !important
+    }
+    .unselected {
+        background: #FFFFFF !important;
+        box-shadow: 0px 10px 40px -10px rgba(181, 180, 180, 0.9);
+    }
+    html {
+    overflow: scroll;
+    overflow-x: hidden;
+    }
+    ::-webkit-scrollbar {
+        width: 0px;  /* remove scrollbar space */
+        background: transparent;  /* optional: just make scrollbar invisible */
+    }
+    /* optional: show position indicator in red */
+    ::-webkit-scrollbar-thumb {
+        background: #FF0000;
+    }
+    </style>
+
 </head>
-<body>
-    <div id="app">
-        <p>
-            <div class="container">
-                <div class="row pt-2">
-                    <div class="col-2">
-                        <a href="index.html"> 
-                            <i class="material-icons" style="font-size: 1.8rem; color: darkslategray"> home </i>    
-                        </a>
-                    </div>
-                    <div class="col-md-2 ml-auto">
-                        <div class="row">
-                            <div class="col-4">
-                                <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
-                            </div>
-                            <div class="col-4">
-                                <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
-                                <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row m-1 pt-5">
-                    <div class="col-4">
-                        <div class="row m-3">
-                            <button class="btn btn-primary" v-on:click="show_card('signal_monitoring_active')" style="width: 15rem"> Signal Monitoring </button>
-                        </div>
-                        <div class="row m-3">
-                            <button class="btn btn-primary" v-on:click="show_card('p300_acquisition_active')" style="width: 15rem"> Calibration </button>
-                        </div>
-                        <div class="row m-3">
-                            <button class="btn btn-primary" v-on:click="show_card('p300_training_active')" style="width: 15rem"> Training </button>
-                        </div>
-                        <div class="row m-3">
-                            <button class="btn btn-primary" v-on:click="show_card('p300_online_active')" style="width: 15rem"> Online </button>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div class="card" v-show="active_card.signal_monitoring_active" style="width: 100%">
-                            <img class="card-img-top" src="../resources/img/signal.gif" alt="Card image cap" style="width: 100%; margin: auto">
-                            <div class="card-body">
-                                <h5 class="card-title"> Signal Monitoring </h5>
-                                <p class="card-text">
-                                In this section you will observe the effects of EOG (mainly eye blinks) and facial muscle movements on EEG data.
-                                <ol>
-                                    <li>Make sure the connection status says <b>connected</b></li>
-                                    <li>Click <b>Begin Signal Monitoring</b> when ready</li>
-                                    <li>A new windows now shows raw data received from the headset in the top row and filtered EEG data in the bottom row</li>
-                                    <li>Notice how the filtered EEG data looks smoother then the raw data. This is because of the high frequency noise being removed using a bandpass filter (1-20Hz).</li>
-                                    <li>Notice eye blinks at channels F3 and F4</li>
-                                    <li>Ask the participant to clinch their teeth and notice the random changes in EEG data across all channels</li>
-                                    <li>Proceed to the Calibration Stage</li>
-                                </ol>    
-                                </p>
-                                <button class="btn btn-primary" v-on:click="run_p300_signal_monitoring()"> Begin Signal Monitoring </button>
-                            </div>
-                        </div>
-                        <div class="card" v-show="active_card.p300_acquisition_active" style="width: 100%">
-                            <img class="card-img-top" src="../resources/img/data.gif" alt="Card image cap" style="width: 40%; margin: auto">
-                            <div class="card-body">
-                                <h5 class="card-title"> P300 Acquisition </h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <label for="basic-url">No. of Trials:</label>
-                                <div class="input-group mb-3" style="width: 30%">
-                                    <input class="form-control m-1" placeholder="10" aria-label="10" aria-describedby="basic-addon1" v-model="n_acq_trials"></input>
-                                </div>
-                                <label for="basic-url">No. of Repetitions:</label>
-                                <div class="input-group mb-3" style="width: 30%">
-                                    <input v-model="n_acq_repetitions" class="form-control m-1" placeholder="10" aria-label="10" aria-describedby="basic-addon1" ></input> <br/><br/>                                
-                                </div>
-                                <button class="btn btn-primary" v-on:click="run_p300_calibration()"> Start calibration </button>
-                            </div>
-                        </div>
-                        <div class="card" v-show="active_card.p300_training_active" style="width: 100%">
-                            <img class="card-img-top" src="../resources/img/classifier.png" alt="Card image cap" style="width: 52%; margin: auto">
-                            <div class="card-body">
-                                <h5 class="card-title"> P300 Training </h5>
-                                <p class="card-text">
-                                    File used to train: {{get_recent_ov_file()}}
-                                </p>
-                                <button class="btn btn-primary" v-if="p300_training==false" v-on:click="run_p300_training()"> Train XDAWN </button>
-                                <button class="btn btn-primary" v-if="p300_training==true" type="button" disabled>
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    Training XDAWN...
-                                </button>
-                                <button class="btn btn-primary" v-if="lda_training==false" v-on:click="run_p300_lda_training()" :disabled="!start_lda_training"> Train LDA </button>
-                                <button class="btn btn-primary" v-if="lda_training==true" type="button" disabled>
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    Training LDA...
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card" v-show="active_card.p300_online_active" style="width: 100%">
-                            <img class="card-img-top" src="../resources/img/bci.gif" alt="Card image cap" style="width: 100%; margin: auto">
-                            <div class="card-body">
-                                <h5 class="card-title"> P300 Online </h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <button class="btn btn-primary" v-on:click="run_p300_online()"> Start Online </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" v-show="active_card.p300_training_active || active_card.p300_online_active">
-                    <div class="card m-3" style="width: 100%;">
-                        <div class="card-body">
-                            <h5 class="card-title">Training Results</h5>
-                            <pre class="card-text"> {{console_output}} </pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </p>
+<body style="font-family:verdana;">
+    
+    <!-- Loading Screen-->
+    <div id="overlay">
+        <div id="progstat"></div>
+        <div id="progress"></div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    
+
+    <!-- Actual App -->
+    <div id="app" style="padding: 10px">
+        
+        <!-- Status Bar -->
+        <vs-row style="padding: 1rem"  vs-align="center">
+            <vs-col vs-justify="left" vs-align="center" vs-w="6">
+                <a href="index.html"> 
+                    <i class="material-icons" style="font-size: 1.8rem; color: black"> home </i>    
+                </a>
+            </vs-col>
+            <vs-col vs-offset="4" vs-align="center" vs-w="2">
+                <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                        <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                        <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
+                        <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+        </vs-row>
+
+        <vs-row style="padding: 1rem">
+            <vs-col vs-justify="center" vs-align="center" vs-w="4">
+                <vs-row vs-w="12" style="padding: 1rem">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <!-- <vs-button v-on:click="show_card('signal_monitoring_active')" style="width: 15rem"> Signal Monitoring </vs-button> -->
+                        <a v-on:click="show_card('signal_monitoring_active')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('signal_monitoring_active')"> 
+                                <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
+                                  <h4>
+                                    Signal Monitoring
+                                  </h4>
+                                </div>
+                            </vs-card>
+                        </a>
+                    </vs-col>
+                </vs-row>
+                <vs-row vs-w="12" style="padding: 1rem">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <a v-on:click="show_card('alpha_pong_calibration_active')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('alpha_pong_calibration_active')"> 
+                                <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
+                                  <h4>
+                                    Calibration
+                                  </h4>
+                                </div>
+                            </vs-card>
+                        </a>
+                    </vs-col>
+                </vs-row>
+                <vs-row vs-w="12" style="padding: 1rem">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <a v-on:click="show_card('alpha_pong_single_player')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('alpha_pong_single_player')"> 
+                                <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
+                                  <h4>
+                                    Single Player
+                                  </h4>
+                                </div>
+                            </vs-card>
+                        </a>
+                    </vs-col>
+                </vs-row>
+                <vs-row vs-w="12" style="padding: 1rem">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                        <a v-on:click="show_card('alpha_pong_multi_player')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('alpha_pong_multi_player')"> 
+                                <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
+                                  <h4>
+                                    Multiplayer Player
+                                  </h4>
+                                </div>
+                            </vs-card>
+                        </a>
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+            <vs-col vs-justify="center" vs-align="center" vs-w="8">
+
+                <vs-card class="animated slideInUp faster" v-show="active_card.signal_monitoring_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
+                    <div slot="media">
+                        <img src="../resources/img/signal.gif" alt="Card image cap" style="width: 100%; margin: auto">
+                    </div>
+                    <div style="padding: 1rem; font-size: 12pt">
+                        <div slot="header">
+                            <h2 style="padding-top: 1rem"> Signal Monitoring </h5>
+                        </div>
+                        <div style="padding-top: 2rem; line-height: 1.6;">
+                            In this section you will observe your brain activity being recorded from the EEG system! Please read the following instructions carefully before continuing:
+                            <ol style="padding-left: 2rem;">
+                                <li>Make sure the connection status says <b>Headset Connected!</b></li>
+                                <dl>
+                                    <li>When you click on <b>Begin Signal Monitoring</b>, a new window will show raw data being received from the headset in the top row and filtered EEG data in the bottom row</li>
+                                    <ul>
+                                        <dd><li>Notice how the filtered EEG data looks smoother then the raw data. This is because of the high frequency noise is being removed using a bandpass filter (1-20Hz).</dd>
+                                    </ul>
+                                        <dt><li>It's also important to check the impedance levels of the electrodes to make sure they're getting good quality data</li></dt>
+                                        <ul>
+                                            <dd><li>Click on the "Channels" tab in the cognionics data acquisition window and make sure the eight electrodes on the bottom right-hand side of the screen are all green</dd>
+                                            <dd><li>If one or more electrode channels are not solid green, try readjusting the individual electrodes on the EEG equipment and make sure they're all touching your head until the impedances turn green</dd>
+                                            <dd><li>When all the electrodes are green on your impedance check, you can move on to the next step</dd>
+                                        </ul>
+                                            <dt><li>When you blink your eyes during an EEG recording, you'll notice a specific type of EEG activity happening in channels F3 and F4</li></dt>
+                                    <ul>
+                                        <dd><li>The type of activity that should be elicited from eye blinks is a positive spike</dd>
+                                        <dd><li>Notice that the electrodes farther away from your eyes (i.e. P3, P4, O1, and O2) have a spike with a lower amplitude than that of electrodes F3 and F4</dd>
+                                    </ul>
+                                </dl>
+                                <li>Lastly, if you clench your teeth, or scrunch up your face like your angry, you'll notice a sudden change in EEG frequencies corresponding to this behavior</li>
+                                <li>Click <b>Begin Signal Monitoring</b> when ready!</li>
+                                <li>Once you've made sure the EEG is recording properly (your eyeblinks and clenched face activity is showing and your impedance check is all green) proceed to the Calibration Stage</li>
+                            </ol>    
+                        </div>
+                        <div style="padding-top: 1rem;">
+                            <vs-button color="#DC143C" type="filled" v-on:click="run_alpha_signal_monitoring()" style="font-size: 12pt"> Begin Signal Monitoring </vs-button>
+                        </div>
+                    </div>
+                </vs-card>
+
+                <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_calibration_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
+                    <div slot="media">
+                        <img src="../resources/img/data.gif" alt="Card image cap" style="width: 40%; margin: auto">
+                    </div>
+                    <div style="padding: 1rem; font-size: 12pt">
+                        <div slot="header">
+                            <h2 style="padding-top: 1rem"> Alpha Wave Calibration </h5>
+                        </div>
+                        <div style="padding-top: 1rem; line-height: 1.6;">
+                            <vs-row>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value"/>
+                                </vs-col>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value"/>                               
+                                </vs-col>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset"/>                               
+                                </vs-col>
+                            </vs-row>
+                            <vs-row>
+                                <vs-col vs-w="12" style="padding-top: 1rem;">
+                                    Calibration Description
+                                    <ol style="padding-left: 2rem;">
+                                        <li>Test</li>
+                                    </ol>
+                                </vs-col>
+                            </vs-row>
+                        </div>
+                        <div style="padding-top: 1rem">
+                            <vs-button color="#DC143C" type="filled" v-on:click="run_alpha_signal_calibration()" style="font-size: 12pt"> Start Calibration </vs-button>
+                        </div>
+                    </div>
+                </vs-card>
+
+                <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_single_player" style="width: 100%; margin: auto; animation-duration: 200ms;">
+                    <div slot="media">
+                        <img src="../resources/img/classifier.png" alt="Card image cap" style="width: 52%; margin: auto">
+                    </div>
+                    <div style="padding: 1rem; font-size: 12pt; line-height: 1.6;">
+                        <div slot="header">
+                            <h2 style="padding-top: 1rem"> Single Player </h5>
+                        </div>
+                        <vs-row>
+                            <vs-col vs-w="12" style="padding-top: 1rem; padding-left: 2rem;">
+                                Description
+                                <ul>
+                                    <li>Test</li>
+                                </ul>
+                            </vs-col>
+                        </vs-row>
+                        <vs-row style="padding-top: 1rem;">
+                            <vs-col vs-w="4">
+                                <vs-button color="#DC143C" type="filled" onclick="location.href='pong_single_player_simulator.html'" style="font-size: 12pt"> Start Game </vs-button>
+                            </vs-col>
+                        </vs-row>
+                    </div>
+                </vs-card>
+
+                <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_multi_player" style="width: 100%; margin: auto; animation-duration: 200ms;">
+                    <div slot="media">
+                        <img src="../resources/img/bci.gif" alt="Card image cap" style="width: 100%; margin: auto">
+                    </div>
+                    <div style="padding: 1rem; font-size: 12pt; line-height: 1.6;">
+                        <div slot="header">
+                            <h2 style="padding-top: 1rem"> Multiplayer </h5>
+                        </div>
+                        <vs-row style="padding-top: 1rem;">
+                            <vs-col>
+                                <!-- <vs-input color="#DC143C" label-placeholder="Enter Group Name" v-model="group_name"/>    -->
+                                <vs-input color="#DC143C" label="Enter Group Name" v-model="group_name"/>                            
+                            </vs-col>
+                        </vs-row>
+                        <vs-row style="padding-top: 1rem">
+                            <vs-col>
+                                Description
+                                <ol style="padding-left: 2rem;">
+                                    <li>Test</li>
+                                </ol>
+                            </vs-col>
+                        </vs-row>
+                        <vs-row style="padding-top: 1rem">
+                            <vs-col vs-w="6">
+                                <vs-button style="font-size: 12pt" color="#DC143C" type="filled" onclick="location.href='pong_multi_player_simulator.html'"> Start Game </vs-button>
+                            </vs-col>
+                        </vs-row>
+                    </div>
+                </vs-card>
+            </vs-col>
+        </vs-row>
+    </div>
+    <script src="../js/dependencies/vue.js"></script>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.umd.js"></script>
 </body>
-<script src="../js/p300_speller.js"></script>
+<script src="../js/pong_uing_alpha.js"></script>
 </html>
