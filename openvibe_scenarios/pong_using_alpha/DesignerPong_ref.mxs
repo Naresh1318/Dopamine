@@ -74,7 +74,7 @@
 		</Box>
 		<Box>
 			<Identifier>(0x00001222, 0x0000295e)</Identifier>
-			<Name>Player 2 Alpha power</Name>
+			<Name>Player 1 Alpha power </Name>
 			<AlgorithmClassIdentifier>(0x0055be5f, 0x087bdd12)</AlgorithmClassIdentifier>
 			<Inputs>
 				<Input>
@@ -162,7 +162,7 @@
 				</Attribute>
 				<Attribute>
 					<Identifier>(0x207c9054, 0x3c841b63)</Identifier>
-					<Value>1232</Value>
+					<Value>1248</Value>
 				</Attribute>
 				<Attribute>
 					<Identifier>(0x4e7b798a, 0x183beafb)</Identifier>
@@ -441,14 +441,14 @@
 					<TypeIdentifier>(0x79a9edeb, 0x245d83fc)</TypeIdentifier>
 					<Name>Stream name</Name>
 					<DefaultValue>OpenViBE Stream</DefaultValue>
-					<Value>PongPlayer2</Value>
+					<Value>PongPlayer1</Value>
 					<Modifiability>false</Modifiability>
 				</Setting>
 				<Setting>
 					<TypeIdentifier>(0x79a9edeb, 0x245d83fc)</TypeIdentifier>
 					<Name>Stream type</Name>
 					<DefaultValue>EEG</DefaultValue>
-					<Value>ECoG_2</Value>
+					<Value>ECoG_1</Value>
 					<Modifiability>false</Modifiability>
 				</Setting>
 			</Settings>
@@ -592,7 +592,7 @@
 					<TypeIdentifier>(0x007deef9, 0x2f3e95c6)</TypeIdentifier>
 					<Name>Acquisition server port</Name>
 					<DefaultValue>1024</DefaultValue>
-					<Value>1025</Value>
+					<Value>1024</Value>
 					<Modifiability>false</Modifiability>
 				</Setting>
 			</Settings>

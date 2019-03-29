@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<title>Single Player Pong</title>
+
+	<!-- Material design Icons-->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 	<!-- Basic styling, centering the canvas -->
 	<style>
@@ -23,7 +26,9 @@
 	</style>
 </head>
 <body>
-	<a href="pong_using_alpha.html"> Home </a>
+	<a href="pong_using_alpha.html"> 
+		<i class="material-icons" style="font-size: 1.8rem; color: black"> home </i>    
+	</a>
 <script>
 /**
  * Scoreboard stuff
@@ -33,25 +38,75 @@
  * 
  */
 
-// LSL to control player 1
-const lsl = require('node-lsl');
-const streams = lsl.resolve_byprop('type', 'EEG');
+// LSL to control player 1 and 2
+const {run_cmd_file} = require("../js/windows_cmd");
+run_cmd_file("start_alpha_player_1" + ".cmd");
+run_cmd_file("start_alpha_player_2" + ".cmd");
+
+function sleep(time, callback) {
+    var stop = new Date().getTime();
+    while(new Date().getTime() < stop + time) {
+        ;
+    }
+    callback();
+}
+
+sleep(2000, function() {
+   // executes after one second, and blocks the thread
+});
+
 var streamInlet_1 = null;
 var streamInlet_2 = null;
 
+const lsl = require('node-lsl');
+var streams = null;
+
 // Find player 1 and 2 stream
-for (s in streams) {
-	if (s.getName() == "PongPlayer1")
-		streamInlet_1 = new lsl.StreamInlet(s);
-	else if (s.getName() == "PongPlayer2")
-		streamInlet_2 = new lsl.StreamInlet(s);
+// Find player 1 Stream
+for (j=0; j<10; j++) {
+	streams = lsl.resolve_byprop('type', 'ECoG_1');
+	for (i=0; i<streams.length; i++) {
+		if (streams[i].getName() === "PongPlayer1")
+			streamInlet_1 = new lsl.StreamInlet(streams[i]);
+			console.log("Player 1 Found!");
+			break;
+	}
+	if (streamInlet_1 === null) {
+		sleep(500, function() {
+		// executes after one second, and blocks the thread
+		});
+	}
+	else {
+		break;
+	}
 }
 
-if (streamInlet_1 == null) {
+if (streamInlet_1 === null) {
 	alert("Player 1 not found. Make sure the openvibe scenario for player 1 is running.");
 	window.location.replace("pong_using_alpha.html");
 }
-else if (streamInlet_2 == null) {
+
+// Find player 2 Stream
+streams = null;
+for (j=0; j<10; j++) {
+	streams = lsl.resolve_byprop('type', 'ECoG_2');
+	for (i=0; i<streams.length; i++) {
+		if (streams[i].getName() === "PongPlayer2")
+			streamInlet_2 = new lsl.StreamInlet(streams[i]);
+			console.log("Player 2 Found!");
+			break;
+	}
+	if (streamInlet_2 === null) {
+		sleep(500, function() {
+		// executes after one second, and blocks the thread
+		});
+	}
+	else {
+		break;
+	}
+}
+
+if (streamInlet_2 == null) {
 	alert("Player 2 not found. Make sure the openvibe scenario for player 2 is running.");
 	window.location.replace("pong_using_alpha.html");
 }
@@ -133,7 +188,7 @@ var
 /**
  * Constants
  */
-WIDTH  = 700,
+WIDTH  = 1000,
 HEIGHT = 600,
 
 pi = Math.PI,
@@ -167,7 +222,7 @@ player = {
 	 * Update the position depending on pressed keys
 	 */
 	update: function() {
-		var data = streamInlet.pullChunk(timeout = 0.0, maxSamples = 1);
+		var data = streamInlet_1.pullChunk(timeout = 0.0, maxSamples = 1);
 		if (data.timestamps[0] !== 0) {
 			var sum, avg = 0;
 
@@ -184,10 +239,10 @@ player = {
 			// console.log("*****************");
 
 			if (avg > 2) {
-				this.y -= 7
+				this.y -= 20
 			} 
 			else {
-				this.y += 7
+				this.y += 20
 			}
 		}
 		if (keystate[wKey]) this.y -= 7;
@@ -221,7 +276,7 @@ ai = {
 	 * Update the position depending on the ball position
 	 */
 	update: function() {
-		var data = streamInlet.pullChunk(timeout = 0.0, maxSamples = 1);
+		var data = streamInlet_2.pullChunk(timeout = 0.0, maxSamples = 1);
 		if (data.timestamps[0] !== 0) {
 			var sum, avg = 0;
 
@@ -238,10 +293,10 @@ ai = {
 			// console.log("*****************");
 
 			if (avg > 2) {
-				this.y -= 7
+				this.y -= 20
 			} 
 			else {
-				this.y += 7
+				this.y += 20
 			}
 		}
 		if (keystate[UpArrow]) this.y -= 7;

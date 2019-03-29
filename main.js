@@ -1,5 +1,5 @@
 let {app, BrowserWindow} = require('electron');
-require('electron-reload')(__dirname);
+// require('electron-reload')(__dirname, {ignored: "/openvibe_scenarios|[\/\\]\./"});
 
 let win = null;
 

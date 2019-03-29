@@ -34,14 +34,14 @@
 					<TypeIdentifier>(0x512a166f, 0x5c3ef83f)</TypeIdentifier>
 					<Name>Min crop value</Name>
 					<DefaultValue>-1</DefaultValue>
-					<Value>9</Value>
+					<Value>15</Value>
 					<Modifiability>false</Modifiability>
 				</Setting>
 				<Setting>
 					<TypeIdentifier>(0x512a166f, 0x5c3ef83f)</TypeIdentifier>
 					<Name>Max crop value</Name>
 					<DefaultValue>1</DefaultValue>
-					<Value>15</Value>
+					<Value>20</Value>
 					<Modifiability>false</Modifiability>
 				</Setting>
 			</Settings>
@@ -815,7 +815,7 @@
 					<TypeIdentifier>(0x79a9edeb, 0x245d83fc)</TypeIdentifier>
 					<Name>Equation</Name>
 					<DefaultValue>x</DefaultValue>
-					<Value>x-9</Value>
+					<Value>x-15</Value>
 					<Modifiability>false</Modifiability>
 				</Setting>
 			</Settings>

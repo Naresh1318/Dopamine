@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- Vuesax Frontend -->
-    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+    <link href="../css/vuesax.css" rel="stylesheet">
 
     <!-- Animation Library -->
     <link rel="stylesheet" href="../css/animation.css">
@@ -57,9 +57,20 @@
         <!-- Status Bar -->
         <vs-row style="padding: 1rem"  vs-align="center">
             <vs-col vs-justify="left" vs-align="center" vs-w="6">
-                <a href="index.html"> 
-                    <i class="material-icons" style="font-size: 1.8rem; color: black"> home </i>    
-                </a>
+                <vs-row>
+                    <vs-col vs-w="4">
+                        <a href="index.html"> 
+                            <i class="material-icons" style="font-size: 1.8rem; color: black"> home </i>    
+                        </a>
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="2">
+                        <i class="material-icons" v-if="acquisition_server_status_2 != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="2">
+                        <i class="material-icons" v-if="acquisition_server_status_2 == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Player 2 Headset Connected!"> signal_cellular_alt </i>
+                        <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
+                    </vs-col>
+                </vs-row>
             </vs-col>
             <vs-col vs-offset="4" vs-align="center" vs-w="2">
                 <vs-row>
@@ -67,7 +78,7 @@
                         <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                        <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
+                        <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Player 1 Headset Connected!"> signal_cellular_alt </i>
                         <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
                     </vs-col>
                 </vs-row>
@@ -183,13 +194,13 @@
                         <div style="padding-top: 1rem; line-height: 1.6;">
                             <vs-row>
                                 <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value"/>
+                                    <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value_1"/>
                                 </vs-col>
                                 <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value"/>                               
+                                    <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value_1"/>                               
                                 </vs-col>
                                 <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset"/>                               
+                                    <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset_1"/>                               
                                 </vs-col>
                             </vs-row>
                             <vs-row>
@@ -216,6 +227,17 @@
                             <h2 style="padding-top: 1rem"> Single Player </h5>
                         </div>
                         <vs-row>
+                            <vs-col vs-w="4">
+                                <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value_1"/>
+                            </vs-col>
+                            <vs-col vs-w="4">
+                                <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value_1"/>                               
+                            </vs-col>
+                            <vs-col vs-w="4">
+                                <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset_1"/>                               
+                            </vs-col>
+                        </vs-row>
+                        <vs-row>
                             <vs-col vs-w="12" style="padding-top: 1rem; padding-left: 2rem;">
                                 Description
                                 <ul>
@@ -225,7 +247,7 @@
                         </vs-row>
                         <vs-row style="padding-top: 1rem;">
                             <vs-col vs-w="4">
-                                <vs-button color="#DC143C" type="filled" onclick="location.href='pong_single_player_simulator.html'" style="font-size: 12pt"> Start Game </vs-button>
+                                <vs-button color="#DC143C" type="filled" v-on:click="run_single_player_pong()" style="font-size: 12pt"> Start Game </vs-button>
                             </vs-col>
                         </vs-row>
                     </div>
@@ -240,10 +262,30 @@
                             <h2 style="padding-top: 1rem"> Multiplayer </h5>
                         </div>
                         <vs-row style="padding-top: 1rem;">
-                            <vs-col>
-                                <!-- <vs-input color="#DC143C" label-placeholder="Enter Group Name" v-model="group_name"/>    -->
-                                <vs-input color="#DC143C" label="Enter Group Name" v-model="group_name"/>                            
-                            </vs-col>
+                            <vs-row>
+                                Player 1:
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value_1"/>
+                                </vs-col>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value_1"/>                               
+                                </vs-col>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset_1"/>                               
+                                </vs-col>
+                            </vs-row>
+                            <vs-row>
+                                Player 2:
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value_2"/>
+                                </vs-col>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value_2"/>                               
+                                </vs-col>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset_2"/>                               
+                                </vs-col>
+                            </vs-row>
                         </vs-row>
                         <vs-row style="padding-top: 1rem">
                             <vs-col>
@@ -255,7 +297,7 @@
                         </vs-row>
                         <vs-row style="padding-top: 1rem">
                             <vs-col vs-w="6">
-                                <vs-button style="font-size: 12pt" color="#DC143C" type="filled" onclick="location.href='pong_multi_player_simulator.html'"> Start Game </vs-button>
+                                <vs-button color="#DC143C" type="filled" v-on:click="run_multi_player_pong()" style="font-size: 12pt"> Start Game </vs-button>
                             </vs-col>
                         </vs-row>
                     </div>
@@ -265,7 +307,7 @@
     </div>
     <script src="../js/dependencies/vue.js"></script>
     <script>window.$ = window.jQuery = require('jquery');</script>
-    <script src="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.umd.js"></script>
+    <script src="../js/dependencies/vuesax.umd.js"></script>
 </body>
-<script src="../js/pong_uing_alpha.js"></script>
+<script src="../js/pong_using_alpha.js"></script>
 </html>
