@@ -34,15 +34,11 @@
  */
 
 // LSL to control player 1
- const lsl = require('node-lsl');
-
- // Resolve an LSL stream with type='EEG'
+const lsl = require('node-lsl');
 const streams = lsl.resolve_byprop('type', 'EEG');
-console.log('Resolved ', streams.length, ' streams of EEG');
-console.log('Connecting...');
+
 streamInlet = new lsl.StreamInlet(streams[0]);
-streamInlet.streamChunks(1, 1000);
-streamInlet.on('chunk', console.log);
+
 
 var NUMS = [
 	"1 101 111",
@@ -128,6 +124,8 @@ pi = Math.PI,
 
 UpArrow   = 38,
 DownArrow = 40,
+wKey = 87,
+sKey = 83,
 
 /**
  * Game elements
@@ -153,8 +151,31 @@ player = {
 	 * Update the position depending on pressed keys
 	 */
 	update: function() {
-		if (keystate[UpArrow]) this.y -= 7;
-		if (keystate[DownArrow]) this.y += 7;
+		var data = streamInlet.pullChunk(timeout = 0.0, maxSamples = 1);
+		if (data.timestamps[0] !== 0) {
+			var sum, avg = 0;
+
+			// dividing by 0 will return Infinity
+			// arr must contain at least 1 element to use reduce
+			if (data.samples)
+			{
+				sum = data.samples.reduce(function(a, b) { return a + b; });
+				avg = sum / data.samples.length;
+			}
+			// console.log(avg);
+			// console.log(data.samples);
+			// console.log(data.timestamps[0]);
+			// console.log("*****************");
+
+			if (avg > 2) {
+				this.y -= 7
+			} 
+			else {
+				this.y += 7
+			}
+		}
+		if (keystate[wKey]) this.y -= 7;
+		if (keystate[sKey]) this.y += 7;
 		// keep the paddle inside of the canvas
 		this.y = Math.max(Math.min(this.y, HEIGHT - this.height), 0);
 	},

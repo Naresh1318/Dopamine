@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<title>Multiplayer Pong</title>
+	<title>Single Player Pong</title>
 
 	<!-- Basic styling, centering the canvas -->
 	<style>
@@ -32,6 +32,30 @@
  * |_| 456    bar 3 and 6 visible => 0 001 001
  * 
  */
+
+// LSL to control player 1
+const lsl = require('node-lsl');
+const streams = lsl.resolve_byprop('type', 'EEG');
+var streamInlet_1 = null;
+var streamInlet_2 = null;
+
+// Find player 1 and 2 stream
+for (s in streams) {
+	if (s.getName() == "PongPlayer1")
+		streamInlet_1 = new lsl.StreamInlet(s);
+	else if (s.getName() == "PongPlayer2")
+		streamInlet_2 = new lsl.StreamInlet(s);
+}
+
+if (streamInlet_1 == null) {
+	alert("Player 1 not found. Make sure the openvibe scenario for player 1 is running.");
+	window.location.replace("pong_using_alpha.html");
+}
+else if (streamInlet_2 == null) {
+	alert("Player 2 not found. Make sure the openvibe scenario for player 2 is running.");
+	window.location.replace("pong_using_alpha.html");
+}
+
 var NUMS = [
 	"1 101 111",
 	"0 001 001",
@@ -116,6 +140,8 @@ pi = Math.PI,
 
 UpArrow   = 38,
 DownArrow = 40,
+wKey = 87,
+sKey = 83,
 
 /**
  * Game elements
@@ -141,8 +167,31 @@ player = {
 	 * Update the position depending on pressed keys
 	 */
 	update: function() {
-		if (keystate[UpArrow]) this.y -= 7;
-		if (keystate[DownArrow]) this.y += 7;
+		var data = streamInlet.pullChunk(timeout = 0.0, maxSamples = 1);
+		if (data.timestamps[0] !== 0) {
+			var sum, avg = 0;
+
+			// dividing by 0 will return Infinity
+			// arr must contain at least 1 element to use reduce
+			if (data.samples)
+			{
+				sum = data.samples.reduce(function(a, b) { return a + b; });
+				avg = sum / data.samples.length;
+			}
+			// console.log(avg);
+			// console.log(data.samples);
+			// console.log(data.timestamps[0]);
+			// console.log("*****************");
+
+			if (avg > 2) {
+				this.y -= 7
+			} 
+			else {
+				this.y += 7
+			}
+		}
+		if (keystate[wKey]) this.y -= 7;
+		if (keystate[sKey]) this.y += 7;
 		// keep the paddle inside of the canvas
 		this.y = Math.max(Math.min(this.y, HEIGHT - this.height), 0);
 	},
@@ -172,10 +221,31 @@ ai = {
 	 * Update the position depending on the ball position
 	 */
 	update: function() {
-		// calculate ideal position
-		var desty = ball.y - (this.height - ball.side)*0.5;
-		// ease the movement towards the ideal position
-		this.y += (desty - this.y) * 0.1;
+		var data = streamInlet.pullChunk(timeout = 0.0, maxSamples = 1);
+		if (data.timestamps[0] !== 0) {
+			var sum, avg = 0;
+
+			// dividing by 0 will return Infinity
+			// arr must contain at least 1 element to use reduce
+			if (data.samples)
+			{
+				sum = data.samples.reduce(function(a, b) { return a + b; });
+				avg = sum / data.samples.length;
+			}
+			// console.log(avg);
+			// console.log(data.samples);
+			// console.log(data.timestamps[0]);
+			// console.log("*****************");
+
+			if (avg > 2) {
+				this.y -= 7
+			} 
+			else {
+				this.y += 7
+			}
+		}
+		if (keystate[UpArrow]) this.y -= 7;
+		if (keystate[DownArrow]) this.y += 7;
 		// keep the paddle inside of the canvas
 		this.y = Math.max(Math.min(this.y, HEIGHT - this.height), 0);
 	},

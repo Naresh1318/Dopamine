@@ -21,4 +21,4 @@ while True:
     # now send it and wait for a bit
     outlet.push_sample(mysample)
     print(mysample)
-    time.sleep(3)
+    time.sleep(0.01)

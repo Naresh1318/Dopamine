@@ -92,8 +92,8 @@
                 </vs-row>
                 <vs-row vs-w="12" style="padding: 1rem">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-                        <a v-on:click="show_card('p300_calibration_active')" style="width: 80%;">
-                            <vs-card actionable class="cardx" :class="change_button('p300_calibration_active')"> 
+                        <a v-on:click="show_card('alpha_pong_calibration_active')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('alpha_pong_calibration_active')"> 
                                 <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
                                   <h4>
                                     Calibration
@@ -105,8 +105,8 @@
                 </vs-row>
                 <vs-row vs-w="12" style="padding: 1rem">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-                        <a v-on:click="show_card('p300_training_active')" style="width: 80%;">
-                            <vs-card actionable class="cardx" :class="change_button('p300_training_active')"> 
+                        <a v-on:click="show_card('alpha_pong_single_player')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('alpha_pong_single_player')"> 
                                 <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
                                   <h4>
                                     Single Player
@@ -118,8 +118,8 @@
                 </vs-row>
                 <vs-row vs-w="12" style="padding: 1rem">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-                        <a v-on:click="show_card('p300_online_active')" style="width: 80%;">
-                            <vs-card actionable class="cardx" :class="change_button('p300_online_active')"> 
+                        <a v-on:click="show_card('alpha_pong_multi_player')" style="width: 80%;">
+                            <vs-card actionable class="cardx" :class="change_button('alpha_pong_multi_player')"> 
                                 <div style="padding: 0.4rem; padding-top: 1rem; padding-bottom: 1rem" align="center" slot="header">
                                   <h4>
                                     Multiplayer Player
@@ -172,7 +172,7 @@
                     </div>
                 </vs-card>
 
-                <vs-card class="animated slideInUp faster" v-show="active_card.p300_calibration_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
+                <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_calibration_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
                         <img src="../resources/img/data.gif" alt="Card image cap" style="width: 40%; margin: auto">
                     </div>
@@ -182,11 +182,14 @@
                         </div>
                         <div style="padding-top: 1rem; line-height: 1.6;">
                             <vs-row>
-                                <vs-col vs-w="6">
-                                    <vs-input color="#DC143C" label-placeholder="No. of Trials:" v-model="n_acq_trials"/>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value"/>
                                 </vs-col>
-                                <vs-col vs-w="6">
-                                    <vs-input color="#DC143C" label-placeholder="No. of Repetitions:" v-model="n_acq_repetitions"/>                               
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value"/>                               
+                                </vs-col>
+                                <vs-col vs-w="4">
+                                    <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset"/>                               
                                 </vs-col>
                             </vs-row>
                             <vs-row>
@@ -199,12 +202,12 @@
                             </vs-row>
                         </div>
                         <div style="padding-top: 1rem">
-                            <vs-button color="#DC143C" type="filled" v-on:click="run_p300_calibration()" style="font-size: 12pt"> Start Calibration </vs-button>
+                            <vs-button color="#DC143C" type="filled" v-on:click="run_alpha_signal_calibration()" style="font-size: 12pt"> Start Calibration </vs-button>
                         </div>
                     </div>
                 </vs-card>
 
-                <vs-card class="animated slideInUp faster" v-show="active_card.p300_training_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
+                <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_single_player" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
                         <img src="../resources/img/classifier.png" alt="Card image cap" style="width: 52%; margin: auto">
                     </div>
@@ -228,7 +231,7 @@
                     </div>
                 </vs-card>
 
-                <vs-card class="animated slideInUp faster" v-show="active_card.p300_online_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
+                <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_multi_player" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
                         <img src="../resources/img/bci.gif" alt="Card image cap" style="width: 100%; margin: auto">
                     </div>
