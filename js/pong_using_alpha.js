@@ -30,13 +30,6 @@ let app = new Vue({
         min_crop_value_2: 9,                       
         max_crop_value_2: 15,                      
         signal_offset_2: 9,
-        p300_spatial_filter_training: false,     // Spatial Filter Training Flag
-        p300_start_lda_training: false,          // Start LDA Training Flag
-        p300_lda_training: false,                // LDA Training Flag
-        p300_recent_ov_file: "",                 // Most recent detected ov file
-        p300_word_constructed: "",
-        p300_word_cloud_server_url: "http://naresh1318.pythonanywhere.com//word",
-        group_name: "",
         reference_scenario_path: ".\\openvibe_scenarios\\pong_using_alpha",  // Openvibe Reference Scenario path
     },
     methods: {
@@ -84,13 +77,6 @@ let app = new Vue({
             }
             this.active_card[div_element] = !this.active_card[div_element];
         },  
-        get_recent_ov_file: function() {
-            /**
-             * Get the most recent .ov file
-             */
-            this.p300_recent_ov_file = get_recent_file(this.signals_path);
-            alert("File used to train: " + this.p300_recent_ov_file);
-        },
         run_alpha_signal_monitoring: function() {
             /**
              * Start signal monitoring
@@ -218,7 +204,12 @@ let app = new Vue({
                     if (err) throw err;
                 });
                 console.log("INFO: DesignerPong Configuration Replaced!");
-                window.location.assign('pong_single_player_simulator.html');  // Go to pong html
+                if (app.acquisition_server_status != "Connected") {
+                    alert("Headset for Player 1 not connected..");
+                }
+                else if (app.acquisition_server_status == "Connected") {
+                    window.location.assign('pong_single_player_simulator.html');  // Go to pong html
+                }
             });
         },
         run_multi_player_pong: function() {

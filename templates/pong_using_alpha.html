@@ -8,9 +8,6 @@
     <!-- Loading Screen -->
     <link href="../css/loading_scrren.css" rel="stylesheet"></link>
     <script src="../js/loading_screen.js"></script>
-
-    <!-- Material design Icons-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- Vuesax Frontend -->
     <link href="../css/vuesax.css" rel="stylesheet">
@@ -60,26 +57,32 @@
                 <vs-row>
                     <vs-col vs-w="4">
                         <a href="index.html"> 
-                            <i class="material-icons" style="font-size: 1.8rem; color: black"> home </i>    
+                            <img src="../resources/icons/baseline_home_black_18dp.png" style="max-width: 1.8rem;">
                         </a>
                     </vs-col>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="2">
-                        <i class="material-icons" v-if="acquisition_server_status_2 != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="2" style="padding-top: 0.5rem;">
+                        Player 2:
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="2">
-                        <i class="material-icons" v-if="acquisition_server_status_2 == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Player 2 Headset Connected!"> signal_cellular_alt </i>
-                        <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
+                        <img src="../resources/icons/baseline_settings_remote_black_48dp.png" v-if="acquisition_server_status_2 != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer; max-width: 1.8rem;">
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="2">
+                        <img src="../resources/icons/baseline_signal_cellular_alt_black_48dp.png" v-if="acquisition_server_status_2 == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Player 2 Headset Connected!" style="max-width: 1.8rem;">
+                        <img src="../resources/icons/baseline_signal_cellular_off_black_48dp.png" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server" style="max-width: 1.8rem;">
                     </vs-col>
                 </vs-row>
             </vs-col>
-            <vs-col vs-offset="4" vs-align="center" vs-w="2">
+            <vs-col vs-offset="3" vs-align="center" vs-w="3">
                 <vs-row>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                        <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="4" style="padding-top: 0.5rem;">
+                        Player 1:
                     </vs-col>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                        <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Player 1 Headset Connected!"> signal_cellular_alt </i>
-                        <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
+                        <img src="../resources/icons/baseline_settings_remote_black_48dp.png" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer; max-width: 1.8rem;">                        
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
+                        <img src="../resources/icons/baseline_signal_cellular_alt_black_48dp.png" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Player 1 Headset Connected!" style="max-width: 1.8rem;">
+                        <img src="../resources/icons/baseline_signal_cellular_off_black_48dp.png" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server" style="max-width: 1.8rem;">
                     </vs-col>
                 </vs-row>
             </vs-col>

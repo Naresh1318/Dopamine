@@ -9,5 +9,5 @@ node_modules/
 
 # Builds
 release-builds/
-Dopamine-win32-x64_1_1/
+Dopamine-win32-x64*/
 build/
