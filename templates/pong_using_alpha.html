@@ -145,7 +145,7 @@
 
                 <vs-card class="animated slideInUp faster" v-show="active_card.signal_monitoring_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
-                        <img src="../resources/img/signal.gif" alt="Card image cap" style="width: 100%; margin: auto">
+                        <img src="../resources/img/pong_signal.gif" alt="Card image cap" style="max-width: 40%; margin: auto">
                     </div>
                     <div style="padding: 1rem; font-size: 12pt">
                         <div slot="header">
@@ -185,7 +185,7 @@
 
                 <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_calibration_active" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
-                        <img src="../resources/img/data.gif" alt="Card image cap" style="width: 40%; margin: auto">
+                        <img src="../resources/img/pong_calibration.gif" alt="Card image cap" style="max-width: 80%; margin: auto">
                     </div>
                     <div style="padding: 1rem; font-size: 12pt">
                         <div slot="header">
@@ -220,7 +220,7 @@
 
                 <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_single_player" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
-                        <img src="../resources/img/classifier.png" alt="Card image cap" style="width: 52%; margin: auto">
+                        <img src="../resources/img/single_pong.gif" alt="Card image cap" height="350" style="min-width: 100%; min-height: 100px; margin: auto">
                     </div>
                     <div style="padding: 1rem; font-size: 12pt; line-height: 1.6;">
                         <div slot="header">
@@ -255,7 +255,7 @@
 
                 <vs-card class="animated slideInUp faster" v-show="active_card.alpha_pong_multi_player" style="width: 100%; margin: auto; animation-duration: 200ms;">
                     <div slot="media">
-                        <img src="../resources/img/bci.gif" alt="Card image cap" style="width: 100%; margin: auto">
+                        <img src="../resources/img/multiplayer_pong.gif" alt="Card image cap" height="350" style="width: 100%; margin: auto">
                     </div>
                     <div style="padding: 1rem; font-size: 12pt; line-height: 1.6;">
                         <div slot="header">
@@ -263,27 +263,27 @@
                         </div>
                         <vs-row style="padding-top: 1rem;">
                             <vs-row>
-                                Player 1:
-                                <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value_1"/>
+                                <vs-col vs-w="3" style="padding-top: 1rem;">Player 1:</vs-col>
+                                <vs-col vs-w="3">
+                                    <vs-input style="width:70%" color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value_1"/>
                                 </vs-col>
-                                <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value_1"/>                               
+                                <vs-col vs-w="3">
+                                    <vs-input style="width:70%" color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value_1"/>                               
                                 </vs-col>
-                                <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset_1"/>                               
+                                <vs-col vs-w="3">
+                                    <vs-input style="width:70%" color="#DC143C" label-placeholder="Offset" v-model="signal_offset_1"/>                               
                                 </vs-col>
                             </vs-row>
-                            <vs-row>
-                                Player 2:
-                                <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value_2"/>
+                            <vs-row style="padding-top:1rem;">
+                                <vs-col vs-w="3" style="padding-top: 1rem;">Player 2:</vs-col>
+                                <vs-col vs-w="3">
+                                    <vs-input style="width:70%" color="#DC143C" label-placeholder="Min Crop Value" v-model="min_crop_value_2"/>
                                 </vs-col>
-                                <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value_2"/>                               
+                                <vs-col vs-w="3">
+                                    <vs-input style="width:70%" color="#DC143C" label-placeholder="Max Crop Value" v-model="max_crop_value_2"/>                               
                                 </vs-col>
-                                <vs-col vs-w="4">
-                                    <vs-input color="#DC143C" label-placeholder="Offset" v-model="signal_offset_2"/>                               
+                                <vs-col vs-w="3">
+                                    <vs-input style="width:70%" color="#DC143C" label-placeholder="Offset" v-model="signal_offset_2"/>                               
                                 </vs-col>
                             </vs-row>
                         </vs-row>
