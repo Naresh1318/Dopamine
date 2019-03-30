@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
 	<title>Single Player Pong</title>
 
 	<!-- Basic styling, centering the canvas -->
@@ -23,7 +23,9 @@
 	</style>
 </head>
 <body>
-	<a href="pong_using_alpha.html"> Home </a>
+	<a href="pong_using_alpha.html"> 
+		<img src="../resources/icons/baseline_home_black_18dp.png" style="max-width: 1.8rem;">    
+	</a>
 <script>
 /**
  * Scoreboard stuff
@@ -33,12 +35,50 @@
  * 
  */
 
+const {run_cmd_file} = require("../js/windows_cmd");
+run_cmd_file("start_alpha_player_1" + ".cmd");
+
+function sleep(time, callback) {
+    var stop = new Date().getTime();
+    while(new Date().getTime() < stop + time) {
+        ;
+    }
+    callback();
+}
+
+sleep(2000, function() {
+   // executes after one second, and blocks the thread
+});
+
 // LSL to control player 1
+var streamInlet_1 = null;
+
 const lsl = require('node-lsl');
-const streams = lsl.resolve_byprop('type', 'EEG');
+var streams = null;
+// Find player 1 Stream
+for (j=0; j<10; j++) {
+	streams = lsl.resolve_byprop('type', 'ECoG_1');
+	for (i=0; i<streams.length; i++) {
+		if (streams[i].getName() === "PongPlayer1") {
+			streamInlet_1 = new lsl.StreamInlet(streams[i]);
+			break;
+		}
+	}
+	if (streamInlet_1 === null) {
+		sleep(500, function() {
+		// executes after one second, and blocks the thread
+		});
+	}
+	else {
+		break;
+	}
+}
 
-streamInlet = new lsl.StreamInlet(streams[0]);
 
+if (streamInlet_1 === null) {
+	alert("Player 1 not found. Make sure the openvibe scenario for player 1 is running.");
+	window.location.replace("pong_using_alpha.html");
+}
 
 var NUMS = [
 	"1 101 111",
@@ -117,8 +157,8 @@ var
 /**
  * Constants
  */
-WIDTH  = 700,
-HEIGHT = 600,
+WIDTH  = 1000,
+HEIGHT = 800,
 
 pi = Math.PI,
 
@@ -151,7 +191,7 @@ player = {
 	 * Update the position depending on pressed keys
 	 */
 	update: function() {
-		var data = streamInlet.pullChunk(timeout = 0.0, maxSamples = 1);
+		var data = streamInlet_1.pullChunk(timeout = 0.0, maxSamples = 1);
 		if (data.timestamps[0] !== 0) {
 			var sum, avg = 0;
 
@@ -168,10 +208,10 @@ player = {
 			// console.log("*****************");
 
 			if (avg > 2) {
-				this.y -= 7
+				this.y -= 20
 			} 
 			else {
-				this.y += 7
+				this.y += 20
 			}
 		}
 		if (keystate[wKey]) this.y -= 7;

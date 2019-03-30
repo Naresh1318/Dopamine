@@ -8,12 +8,9 @@
     <!-- Loading Screen -->
     <link href="../css/loading_scrren.css" rel="stylesheet"></link>
     <script src="../js/loading_screen.js"></script>
-
-    <!-- Material design Icons-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- Vuesax Frontend -->
-    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+    <link href="../css/vuesax.css" rel="stylesheet">
 
     <!-- Animation Library -->
     <link rel="stylesheet" href="../css/animation.css">
@@ -58,17 +55,17 @@
         <vs-row style="padding: 1rem"  vs-align="center">
             <vs-col vs-justify="left" vs-align="center" vs-w="6">
                 <a href="index.html"> 
-                    <i class="material-icons" style="font-size: 1.8rem; color: black"> home </i>    
+                    <img src="../resources/icons/baseline_home_black_18dp.png" style="max-width: 1.8rem;">    
                 </a>
             </vs-col>
             <vs-col vs-offset="4" vs-align="center" vs-w="2">
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                        <i class="material-icons" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer;"> settings_remote </i>
+                        <img src="../resources/icons/baseline_settings_remote_black_48dp.png" v-if="acquisition_server_status != 'Connected'" v-on:click="start_acquisition_server()" style="cursor: pointer; max-width: 1.8rem;">                                                
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                        <i class="material-icons" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Headset Connected!"> signal_cellular_alt </i>
-                        <i class="material-icons" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server"> signal_cellular_off </i>
+                        <img src="../resources/icons/baseline_signal_cellular_alt_black_48dp.png" v-if="acquisition_server_status == 'Connected'" data-toggle="tooltip" data-placement="bottom" title="Player 1 Headset Connected!" style="max-width: 1.8rem;">
+                        <img src="../resources/icons/baseline_signal_cellular_off_black_48dp.png" v-else data-toggle="tooltip" data-placement="bottom" title="Headset not connected. Press Connect and then Press Play in acquisition server" style="max-width: 1.8rem;">
                     </vs-col>
                 </vs-row>
             </vs-col>
@@ -308,7 +305,7 @@
     </div>
     <script src="../js/dependencies/vue.js"></script>
     <script>window.$ = window.jQuery = require('jquery');</script>
-    <script src="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.umd.js"></script>
+    <script src="../js/dependencies/vuesax.umd.js"></script>
 </body>
 <script src="../js/p300_speller.js"></script>
 </html>
