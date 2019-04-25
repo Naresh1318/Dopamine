@@ -192,7 +192,7 @@
 		</Box>
 		<Box>
 			<Identifier>(0x00001e8d, 0x00002541)</Identifier>
-			<Name>O1;O2;Pz</Name>
+			<Name>O1;O2;P3</Name>
 			<AlgorithmClassIdentifier>(0x361722e8, 0x311574e8)</AlgorithmClassIdentifier>
 			<Inputs>
 				<Input>
@@ -211,7 +211,7 @@
 					<TypeIdentifier>(0x79a9edeb, 0x245d83fc)</TypeIdentifier>
 					<Name>Channel List</Name>
 					<DefaultValue>:</DefaultValue>
-					<Value>O1;O2;Pz</Value>
+					<Value>O1;O2;P3</Value>
 					<Modifiability>false</Modifiability>
 				</Setting>
 				<Setting>
