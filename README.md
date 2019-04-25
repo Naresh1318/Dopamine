@@ -1,7 +1,7 @@
 # Dopamine
 A desktop app providing a easy to use wrapper on top of OpenVibe  to perform BCI experiments.
 
-<img src="https://raw.githubusercontent.com/Naresh1318/Dopamine/master/README/UI_image.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Dopamine/master/README/UI_gif.gif" alt="Cover" style="width: 100px;"/>
 
 ## Usage
 1. Download OpenVibe version 2.2 from [here](http://openvibe.inria.fr/downloads/).
