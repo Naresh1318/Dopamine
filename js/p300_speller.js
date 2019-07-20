@@ -30,7 +30,7 @@ let app = new Vue({
         p300_lda_training: false,                // LDA Training Flag
         p300_recent_ov_file: "",                 // Most recent detected ov file
         p300_word_constructed: "",
-        p300_word_cloud_server_url: "http://naresh1318.pythonanywhere.com//word",
+        p300_word_cloud_server_url: "https://speller.naresh1318.com//word",
         group_name: "",
         reference_scenario_path: ".\\openvibe_scenarios\\p300_speller",  // Openvibe Reference Scenario path
         scenario_path: path.join("C:\\Users", os.userInfo().username ,"AppData\\Roaming\\openvibe-2.2.0\\scenarios\\bci-examples\\p300-speller-xDAWN"),  // Openvibe scenario path in the user PC
