@@ -2,7 +2,7 @@
 A desktop app providing a easy to use wrapper on top of OpenVibe  to perform BCI experiments.
 
 <p align=center>
-    <img src="https://github.com/Naresh1318/Dopamine/blob/master/resources/icons/icon.png" alt="Dopamine"/>
+    <img src="https://raw.githubusercontent.com/Naresh1318/Dopamine/master/resources/icons/icon.png" alt="Dopamine"/>
     <p align="center"> <b>BCIs for classrooms</b> </p>
 </p>
 
