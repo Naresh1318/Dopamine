@@ -20,13 +20,17 @@ A desktop app providing a easy to use wrapper on top of OpenVibe  to perform BCI
 2. Install your headset acquisition software. For Cognionics headsets install the acquisition software from [here](https://drive.google.com/open?id=15Mh59hJcAcmPncSCMVl-nhWGIjcorBjC).
 
 ### Install
-1. Download the latest version of Dopamine from [here](https://github.com/Naresh1318/Dopamine/releases).
+1. Download the latest version of Dopamine zip file from [here](https://github.com/Naresh1318/Dopamine/releases).
 
-2. Connect your BCI headset to your PC, check impedance and all that fun stuff.
+2. Extract the files to a desired folder.
 
-3. Start an LSL stream from your Headset application. If your manufacturer does not support LSL look [here](https://github.com/sccn/labstreaminglayer).
+3. Add a shortcut to `Dopamine.exe` present in the extracted files to the desktop if needed.
 
-4. If you have a cognionics headset follow instructions from [here](https://drive.google.com/file/d/1oV1uiYXO0vl_Lwl3DB1Nc3sIiC0FgPPY/view?usp=sharing) to get started!
+4. Connect your BCI headset to your PC, check impedance and all that fun stuff.
+
+5. Start an LSL stream from your Headset application. If your manufacturer does not support LSL look [here](https://github.com/sccn/labstreaminglayer).
+
+6. If you have a cognionics headset follow instructions from [here](https://drive.google.com/file/d/1oV1uiYXO0vl_Lwl3DB1Nc3sIiC0FgPPY/view?usp=sharing) to get started!
 
 
 ## Build
