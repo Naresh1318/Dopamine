@@ -1,6 +1,6 @@
 {
   "name": "dopamine",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "A desktop app providing a easy to use wrapper on top of OpenVibe  to perform BCI experiments.",
   "main": "main.js",
   "scripts": {
@@ -30,11 +30,10 @@
   "dependencies": {
     "electron": "^4.1.2",
     "electron-package": "^0.1.0",
-    "electron-packager": "^13.1.1",
     "electron-reload": "^1.4.0",
     "find-process": "^1.2.1",
     "fs": "0.0.1-security",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "node-lsl": "git+https://github.com/urish/node-lsl.git",
     "ref": "^1.3.5",
     "request": "^2.88.0",
