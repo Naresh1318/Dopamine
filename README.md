@@ -8,7 +8,7 @@ A desktop app providing a easy to use wrapper on top of OpenVibe  to perform BCI
 
 <p align=center>
   <img src="https://github.com/Naresh1318/Dopamine/raw/master/README/ui_gif.gif" alt="Cover" style="width: 100px;"/>
-    <p align="center"> <b>Screenhot</b> </p>
+    <p align="center"> <b>Screenshot</b> </p>
 </p>
 
 
@@ -63,6 +63,10 @@ and `openvibe_scenarios` directories from project root to `Dopamine-win32-x64` d
 
 7. Double click on Dopamine.exe under `Dopamine-win32-x64` to run the built project.
 
+
+# Speller server 
+
+Link: https://speller.naresh1318.com/
 
 ## Built Using
 1. Electron.js
